@@ -1,0 +1,29 @@
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // TODO: Static Folder for img's, csv's, pdf's, etc.
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads',
+  })
+
+  // TODO : Validation Pipe
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+  }))
+
+  // TODO : CORS
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  })
+
+  await app.listen(process.env.PORT ?? 3000);
+}
+bootstrap();
