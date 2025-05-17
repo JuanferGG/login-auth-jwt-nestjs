@@ -16,13 +16,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config';
 import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { unlink } from 'fs';
-import { LoginUserDto } from './dto/login-user.dto';
 import { LoginPipePipe } from './pipes/login-pipe.pipe';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // ! Registro de usuario
   @Post('/RegisterUser')
   @UseInterceptors(FileInterceptor('image', multerConfig))
   create(
@@ -44,7 +44,8 @@ export class UserController {
     // TODO: Continuar si todo está bien ✅
     return this.userService.create(body.value, image);
   }
-
+  
+  // ! Login de usuario
   @Post('/login')
   login(@Body(new LoginPipePipe()) body: { value: any; errors: any }) {
     // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción

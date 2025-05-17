@@ -30,6 +30,17 @@ export class UserService {
     createUserDto: CreateUserDto,
     image?: Express.Multer.File,
   ): Promise<{ message: String; user: User }> {
+    const userExist = await this.UserModel.findOne({
+      email: createUserDto.email,
+    });
+
+    if (userExist) {
+      if (image?.path && image.path != '/uploads/Users/UserDefault.png') {
+        await unlink(image.path);
+      }
+      throw new HttpException('El Email ya esta en uso', 401);
+    }
+
     const { password } = createUserDto;
     const saltOrRounds = 10;
     const plainToHash = await hash(password, saltOrRounds);
@@ -41,17 +52,6 @@ export class UserService {
         ? `/uploads/Users/${image.filename}`
         : '/uploads/Users/UserDefault.png',
     });
-
-    const userExist = await this.UserModel.findOne({
-      email: createUserDto.email,
-    });
-
-    if (userExist) {
-      if (image?.path && image.path != '/uploads/Users/UserDefault.png') {
-        await unlink(image.path);
-      }
-      throw new HttpException('El Email ya esta en uso', 401);
-    }
 
     const user = await userCreate.save();
 
@@ -77,7 +77,9 @@ export class UserService {
       throw new HttpException('Contraseña incorrecta', 401);
     }
 
-    return 'Login';
+    const data = userFind
+
+    return data;
   }
 
   findAll() {
