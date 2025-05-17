@@ -8,10 +8,14 @@ import { unlink } from 'fs/promises';
 import { join } from 'path';
 import { compare, hash } from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private UserModel: Model<User>) {}
+  constructor(@InjectModel(User.name) private UserModel: Model<User>, 
+  private jwtService: JwtService
+) {}
 
   // TODO: Funcion para eliminar la imagen
   private async deleteImage(imagePath: string): Promise<void> {
@@ -62,9 +66,8 @@ export class UserService {
   }
 
   // TODO: Login
-  async login(loginUser: LoginUserDto) {
+  async login(loginUser: LoginUserDto, res: Response) {
     const { email, password } = loginUser;
-
     const userFind = await this.UserModel.findOne({ email });
 
     if (!userFind) {
@@ -77,9 +80,27 @@ export class UserService {
       throw new HttpException('Contraseña incorrecta', 401);
     }
 
-    const data = userFind
+    const payload = {
+      id: userFind._id,
+      firstName: userFind.firstName,
+      lastName: userFind.lastName,
+    }
+    const token = await this.jwtService.signAsync(payload)
 
-    return data;
+    // TODO: Configurar la cookie con el token JWT
+    res.cookie('jwt_token', token, {
+      httpOnly: true,
+      secure: false, //* Cambiar a false en desarrollo local
+      sameSite: 'lax', //* Cambiar a 'lax' para pruebas locales
+      maxAge: 3 * 60 * 60 * 1000,
+    });
+
+    const ResponseData = {
+      user: userFind,
+      token: token, //* Seguimos enviando el token para compatibilidad con clientes existentes
+    }
+
+    return ResponseData;
   }
 
   findAll() {

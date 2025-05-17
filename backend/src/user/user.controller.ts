@@ -9,7 +9,10 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  UseGuards,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -17,6 +20,7 @@ import { multerConfig } from './config/multer.config';
 import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { unlink } from 'fs';
 import { LoginPipePipe } from './pipes/login-pipe.pipe';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -47,15 +51,19 @@ export class UserController {
   
   // ! Login de usuario
   @Post('/login')
-  login(@Body(new LoginPipePipe()) body: { value: any; errors: any }) {
+  login(
+    @Body(new LoginPipePipe()) body: { value: any; errors: any },
+    @Res({ passthrough: true }) res: Response
+  ) {
     // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
     if (body.errors) {
       throw new BadRequestException(body.errors);
     }
 
-    return this.userService.login(body.value);
+    return this.userService.login(body.value, res);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.userService.findAll();
