@@ -9,23 +9,24 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
-  HttpException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config';
-import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe.';
+import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { unlink } from 'fs';
+import { LoginUserDto } from './dto/login-user.dto';
+import { LoginPipePipe } from './pipes/login-pipe.pipe';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('/CreateUser')
+  @Post('/RegisterUser')
   @UseInterceptors(FileInterceptor('image', multerConfig))
   create(
-    @Body(new ValidateUserDtoPipe()) body:  { value: any; errors: any },
+    @Body(new ValidateUserDtoPipe()) body: { value: any; errors: any },
     @UploadedFile() image: Express.Multer.File,
   ) {
     // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
@@ -42,6 +43,16 @@ export class UserController {
     }
     // TODO: Continuar si todo está bien ✅
     return this.userService.create(body.value, image);
+  }
+
+  @Post('/login')
+  login(@Body(new LoginPipePipe()) body: { value: any; errors: any }) {
+    // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
+    if (body.errors) {
+      throw new BadRequestException(body.errors);
+    }
+
+    return this.userService.login(body.value);
   }
 
   @Get()

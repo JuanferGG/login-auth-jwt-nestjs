@@ -6,11 +6,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { unlink } from 'fs/promises';
 import { join } from 'path';
+import { compare, hash } from 'bcrypt';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private UserModel: Model<User>) {}
 
+  // TODO: Funcion para eliminar la imagen
   private async deleteImage(imagePath: string): Promise<void> {
     if (imagePath && imagePath !== '/uploads/tasks/default_task.jpg') {
       try {
@@ -22,12 +25,18 @@ export class UserService {
     }
   }
 
+  // TODO: Funcion para registrar un usuario
   async create(
     createUserDto: CreateUserDto,
     image?: Express.Multer.File,
   ): Promise<{ message: String; user: User }> {
+    const { password } = createUserDto;
+    const saltOrRounds = 10;
+    const plainToHash = await hash(password, saltOrRounds);
+
     const userCreate = new this.UserModel({
       ...createUserDto,
+      password: plainToHash,
       image: image
         ? `/uploads/Users/${image.filename}`
         : '/uploads/Users/UserDefault.png',
@@ -39,7 +48,7 @@ export class UserService {
 
     if (userExist) {
       if (image?.path && image.path != '/uploads/Users/UserDefault.png') {
-        unlink(image.path);
+        await unlink(image.path);
       }
       throw new HttpException('El Email ya esta en uso', 401);
     }
@@ -50,6 +59,25 @@ export class UserService {
       message: 'User created successfully',
       user: user,
     };
+  }
+
+  // TODO: Login
+  async login(loginUser: LoginUserDto) {
+    const { email, password } = loginUser;
+
+    const userFind = await this.UserModel.findOne({ email });
+
+    if (!userFind) {
+      throw new HttpException('Usuario no encontrado', 401);
+    }
+
+    const isPasswordValid = await compare(password, userFind.password);
+
+    if (!isPasswordValid) {
+      throw new HttpException('Contraseña incorrecta', 401);
+    }
+
+    return 'Login';
   }
 
   findAll() {
@@ -79,6 +107,6 @@ export class UserService {
 
     await this.UserModel.findByIdAndDelete(id);
 
-    return { message: 'Tarea eliminada exitosamente' };
+    return { message: 'Usuario eliminada exitosamente' };
   }
 }
