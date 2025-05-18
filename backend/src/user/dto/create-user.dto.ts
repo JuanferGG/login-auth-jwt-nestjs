@@ -1,27 +1,34 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+  Matches,
+} from 'class-validator';
+import { IsNotBlank } from 'src/assets/validators/IsNoBlank.validator';
 
 export class CreateUserDto {
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(3)
-    firstName: string;
+  @IsString()
+  @MinLength(3)
+  @IsNotBlank({ message: 'El nombre no puede estar vacío' })
+  firstName: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(3)
-    lastName: string;
+  @IsString()
+  @MinLength(3)
+  @IsNotBlank({ message: 'El apellido no puede estar vacío' })
+  lastName: string;
 
-    @IsEmail()
-    @IsNotEmpty()
-    email: string;
+  @IsEmail()
+  @IsNotBlank({ message: 'El correo electrónico no puede estar vacío' })
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(8)
-    password: string;
+  @IsString()
+  @MinLength(8)
+  @IsNotBlank({ message: 'La contraseña no puede estar vacía' })
+  password: string;
 
-    @IsString()
-    @IsOptional()
-    image?: Express.Multer.File | String;
-
+  @IsString()
+  @IsOptional()
+  image?: Express.Multer.File | String;
 }

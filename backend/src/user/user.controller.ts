@@ -20,7 +20,8 @@ import { multerConfig } from './config/multer.config';
 import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { unlink } from 'fs';
 import { LoginPipePipe } from './pipes/login-pipe.pipe';
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from '../assets/guards/auth.guard';
+import { ValidateUpdatePipe } from './pipes/Update.pipe';
 
 @Controller('user')
 export class UserController {
@@ -48,19 +49,24 @@ export class UserController {
     // TODO: Continuar si todo está bien ✅
     return this.userService.create(body.value, image);
   }
-  
+
   // ! Login de usuario
   @Post('/login')
   login(
     @Body(new LoginPipePipe()) body: { value: any; errors: any },
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
     if (body.errors) {
       throw new BadRequestException(body.errors);
     }
-
     return this.userService.login(body.value, res);
+  }
+
+  // ! Logout de usuario
+  @Post('/logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    return this.userService.logout(res);
   }
 
   @UseGuards(AuthGuard)
@@ -75,8 +81,25 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @UseInterceptors(FileInterceptor('image', multerConfig))
+  update(
+    @Param('id') id: string,
+    @Body(new ValidateUpdatePipe) body: { value: any; errors: any },
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
+    if (body.errors) {
+      // TODO: Eliminar imagen si se subió
+      if (image?.path) {
+        unlink(image.path, (err) => {
+          if (err) throw err;
+        });
+      }
+      throw new BadRequestException(body.errors);
+      // ? Una Exception mas corta para el usuario final
+      // throw new HttpException("Error de validación", 400)
+    }
+    return this.userService.update(id, body.value, image);
   }
 
   @Delete(':id')

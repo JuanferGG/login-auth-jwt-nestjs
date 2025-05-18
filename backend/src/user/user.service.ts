@@ -13,13 +13,14 @@ import { Response } from 'express';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private UserModel: Model<User>, 
-  private jwtService: JwtService
-) {}
+  constructor(
+    @InjectModel(User.name) private UserModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
   // TODO: Funcion para eliminar la imagen
   private async deleteImage(imagePath: string): Promise<void> {
-    if (imagePath && imagePath !== '/uploads/tasks/default_task.jpg') {
+    if (imagePath && imagePath !== '/uploads/Users/UserDefault.png') {
       try {
         const fullPath = join(process.cwd(), imagePath);
         await unlink(fullPath);
@@ -84,8 +85,8 @@ export class UserService {
       id: userFind._id,
       firstName: userFind.firstName,
       lastName: userFind.lastName,
-    }
-    const token = await this.jwtService.signAsync(payload)
+    };
+    const token = await this.jwtService.signAsync(payload);
 
     // TODO: Configurar la cookie con el token JWT
     res.cookie('jwt_token', token, {
@@ -98,9 +99,15 @@ export class UserService {
     const ResponseData = {
       user: userFind,
       token: token, //* Seguimos enviando el token para compatibilidad con clientes existentes
-    }
+    };
 
     return ResponseData;
+  }
+
+  // TODO: Logout
+  async logout(res: Response) {
+    res.clearCookie('jwt_token');
+    return { message: 'Logout exitoso' };
   }
 
   findAll() {
@@ -111,10 +118,58 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  // TODO: Funcion para actualizar todo el usuario
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    image?: Express.Multer.File,
+  ) {
+    if (!isValidObjectId(id)) {
+      throw new HttpException('El id no es valido', 401);
+    }
+    const userFound = await this.UserModel.findById(id);
+    const emailFound = await this.UserModel.findOne({
+      email: updateUserDto.email,
+    });
+    const { password } = updateUserDto;
+
+    if (password?.trim()) {
+      const saltOrRounds = 10;
+      const plainToHash = await hash(password, saltOrRounds);
+      updateUserDto.password = plainToHash;
+    }
+
+    if (!userFound) {
+      if (image?.path) {
+        await unlink(image.path);
+      }
+      throw new HttpException('El usuario no existe', 400);
+    }
+
+    if (emailFound && emailFound.email !== userFound.email) {
+      if (image?.path) {
+        await unlink(image.path);
+      }
+      throw new HttpException('El Email ya esta en uso', 401);
+    }
+
+    if (image) {
+      await this.deleteImage(userFound.image);
+    }
+
+    const updateUser = await this.UserModel.findByIdAndUpdate(
+      id,
+      {
+        ...updateUserDto,
+        image: image ? `/uploads/Users/${image.filename}` : userFound.image,
+      },
+      { new: true },
+    );
+
+    return { message: 'Usuario actualizado exitosamente', updateUser };
   }
 
+  // TODO: Funcion para eliminar un usuario
   async remove(id: string) {
     if (!isValidObjectId(id)) {
       throw new HttpException('El id no es valido', 400);
