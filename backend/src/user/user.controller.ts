@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config';
 import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
