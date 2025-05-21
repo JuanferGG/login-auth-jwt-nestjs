@@ -9,7 +9,7 @@ export interface UserLogin {
 // Usar la interfaz como tipo en el parámetro
 export const login = async (user: UserLogin) => {
   return await axios.post("/user/login", user).catch((err) => {
-    console.log(err);
+    // console.log(err);
     throw err;
   });
 };

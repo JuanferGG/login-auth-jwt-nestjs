@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { login } from "../Api/auth";
 import type { UserLogin } from "../Api/auth";
@@ -18,11 +19,8 @@ export const useLogin = () => {
       }
       return response;
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-        "Error al iniciar sesión. Verifica tus credenciales."
-      );
-      return null;
+      setError(err)
+      throw err;
     } finally {
       setLoading(false);
     }

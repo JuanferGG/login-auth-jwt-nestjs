@@ -2,18 +2,16 @@ import { useEffect, useState } from "react";
 import { useLogin } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../hooks/useUserStore";
+import { NotyfComponent } from "../components/UI/NotyfComponent";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { handleLogin, loading, error: hookError } = useLogin();
+  const { handleLogin, loading } = useLogin();
   const navigate = useNavigate();
   const { isAuthenticated } = useUserStore();
 
-  console.log(isAuthenticated)
-
-  // Redirección automática si ya está autenticado
+  //! Redirección automática si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -22,29 +20,29 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    const result = await handleLogin({ email, password });
-    if (!result) {
-      setError(hookError || "Error al iniciar sesión");
-    } else {
-      navigate("/");
-    }
+    await handleLogin({ email, password })
+      .then(() => {
+        NotyfComponent.success("Inicio de sesión exitoso");
+      })
+      .catch((error) => {
+        // console.log(error.response.data.message)
+        NotyfComponent.error(error.response.data.message);
+      });
+
+    // navigate("/");
   };
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <section className="flex bg-red-400 h-full w-full items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
+        className="bg-white p-8  rounded-lg shadow-md w-full h-max max-w-sm"
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
           Iniciar sesión
         </h2>
-        {(error || hookError) && (
-          <div className="mb-4 text-red-600 text-sm text-center">
-            {error || hookError}
-          </div>
-        )}
+
+        <h5 className="text-left my-3 font-semibold">Correo:</h5>
         <input
           type="email"
           placeholder="Correo electrónico"
@@ -54,6 +52,7 @@ export default function LoginPage() {
           autoFocus
           required
         />
+        <h5 className="text-left my-3 font-semibold">Contraseña:</h5>
         <input
           type="password"
           placeholder="Contraseña"
