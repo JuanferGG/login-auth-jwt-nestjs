@@ -13,3 +13,16 @@ export const login = async (user: UserLogin) => {
     throw err;
   });
 };
+
+export const logout = async () => {
+  return await axios
+    .post("/user/logout")
+    .then((res) => {
+      // console.log(res);
+      return res
+    })
+    .catch((err) => {
+      // console.log(err);
+      throw err;
+    });
+};

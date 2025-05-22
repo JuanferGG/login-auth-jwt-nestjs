@@ -25,11 +25,15 @@ export default function LoginPage() {
         NotyfComponent.success("Inicio de sesión exitoso");
       })
       .catch((error) => {
-        // console.log(error.response.data.message)
-        NotyfComponent.error(error.response.data.message);
+        const errors = error.response.data.message;
+        if(Array.isArray(errors)){
+          errors.forEach((error) => {
+            NotyfComponent.error(error);
+          });
+          return;
+        }
+        NotyfComponent.error(errors);
       });
-
-    // navigate("/");
   };
 
   return (
@@ -63,7 +67,7 @@ export default function LoginPage() {
         />
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition-colors"
+          className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition-colors"
           disabled={loading}
         >
           {loading ? "Cargando..." : "Entrar"}

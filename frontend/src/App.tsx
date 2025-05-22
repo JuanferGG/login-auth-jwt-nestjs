@@ -14,6 +14,8 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+
+      {/* Protected Routes isAuthenticated */}
       <Route element={<ProtectedRoutes />}>
         <Route path="/" element={<HomePage />} />
       </Route>
