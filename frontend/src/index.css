@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
-
 #root{
     width: 100vw !important;
     max-width: 100vw !important;
     height: 100vh !important;
     padding: 0 !important;
+}
+
+.color-primary{
+    color: #222831;
+}
+.color-secondary{
+    color: #393E46;
 }

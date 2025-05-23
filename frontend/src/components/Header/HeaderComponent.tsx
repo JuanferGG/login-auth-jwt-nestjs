@@ -1,11 +1,15 @@
 import { useLogout } from "../../hooks/useAuth";
 import { NotyfComponent } from "../UI/NotyfComponent";
+import { useUserStore } from "../../hooks/useUserStore";
 
 // TODO Icon's
 import { BiLogOutCircle } from "react-icons/bi";
 
 export default function HeaderComponent() {
+  const { user } = useUserStore();
   const { handleLogout } = useLogout();
+
+  console.log(user);
 
   const handleLogoutClick = async () => {
     await handleLogout()
