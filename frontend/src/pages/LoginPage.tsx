@@ -41,7 +41,7 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="flex bg-[#DFD0B8] h-full w-full items-center justify-center">
+    <section className="flex bg-[#DFD0B8] h-[100vh] w-full items-center justify-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8  rounded-lg shadow-md w-full h-max max-w-sm"
@@ -86,7 +86,7 @@ export default function LoginPage() {
         >
           {loading ? "Cargando..." : "Entrar"}
         </button>
-        <p className="mt-5">
+        <p className="mt-5 text-center">
           ¿No tienes cuenta?{" "}
           <Link to={"/register"} className="text-blue-500">
             Crear cuenta
