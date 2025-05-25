@@ -2,19 +2,21 @@
 import { useUserStore } from "../../hooks/useUserStore";
 
 // TODO Components
+import SubMenuProfile from "./SubMenuProfile";
+import { Link } from "react-router-dom";
 
 // TODO Icon's
-import { Link } from "react-router-dom";
-import SubMenuProfile from "./SubMenuProfile";
+import { BiMenu } from "react-icons/bi";
 
 export default function HeaderComponent() {
   const { user } = useUserStore();
 
 
   return (
-    <header className="w-[90vw] m-auto px-2 py-2 flex justify-between bg-white rounded-b-xl fixed top-0 left-0 right-0 z-50">
+    <header className="w-full md:w-[90vw] px-2 py-2 flex justify-between bg-white rounded-b-xl fixed top-0 left-0 right-0 mx-auto z-50 shadow-2xl">
       <div className="flex items-center">
-        <Link to={"/"}>
+        <BiMenu className="block sm:hidden text-2xl" />
+        <Link to={"/"} className="hidden sm:block">
           <img src="./vite.svg" alt="logo_vite"></img>
         </Link>
       </div>
