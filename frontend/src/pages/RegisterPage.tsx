@@ -8,15 +8,36 @@ import { BiIdCard, BiUser } from "react-icons/bi";
 export default function RegisterPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    image: null as File | null,
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const dataUser = new FormData();
+    dataUser.append("firstName", formData.firstName)
+    dataUser.append("lastName", formData.lastName)
+    dataUser.append("email", formData.email)
+    dataUser.append("password", formData.password)
+    if (formData.image) {
+      dataUser.append("image", formData.image)
+    }
+
+    console.log(dataUser)
+  };
 
   return (
-    <section className="flex bg-[#DFD0B8] h-fit w-full items-center justify-center">
-      <form className="bg-white p-4 my-5 rounded-lg shadow-md w-full h-max max-w-sm">
+    <section className="flex bg-[#DFD0B8] min-h-screen max-h-fit w-full items-center justify-center">
+      <form onSubmit={handleSubmit} className="flex flex-col w-full items-center bg-white p-4 my-5 rounded-lg shadow-md sm:w-[700px] h-max">
         <div>
           <h1 className="text-3xl text-center font-bold mb-4">Crear Cuenta</h1>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="left">
+        <div className="flex flex-col sm:flex sm:flex-row gap-2 w-full">
+          <div className="left w-full">
             {/* // TODO firstName */}
             <h5 className="text-left my-3 font-semibold flex items-center gap-1">
               <BiUser />
@@ -24,8 +45,9 @@ export default function RegisterPage() {
             </h5>
             <input
               type="text"
-              placeholder="Correo electrónico"
+              placeholder="Nombre completo"
               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={(e) => setFormData({...formData, firstName: e.target.value})}
               autoFocus
               required
             />
@@ -36,8 +58,9 @@ export default function RegisterPage() {
             </h5>
             <input
               type="text"
-              placeholder="Correo electrónico"
+              placeholder="Apellido completo"
               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={(e) => setFormData({...formData, lastName: e.target.value})}
               autoFocus
               required
             />
@@ -50,11 +73,12 @@ export default function RegisterPage() {
               type="email"
               placeholder="Correo electrónico"
               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
               autoFocus
               required
             />
           </div>
-          <div className="right">
+          <div className="right w-full">
             {/* // TODO password */}
             <h5 className="text-left my-3 font-semibold flex items-center gap-1">
               <MdKey className="text-[#393E46]" />
@@ -64,6 +88,7 @@ export default function RegisterPage() {
               type="password"
               placeholder="Contraseña"
               className="border border-gray-300 rounded px-3 py-2 mb-6 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
             />
             {/* // TODO image - opcional */}
@@ -72,54 +97,58 @@ export default function RegisterPage() {
               Foto de perfil (opcional):
             </h5>
             <div className="mb-6">
-              <div className="flex items-center justify-center w-full">
-                <label
-                  htmlFor="image-upload"
-                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-4 text-gray-500"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                      />
-                    </svg>
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Haz clic para subir</span>{" "}
-                      o arrastra una imagen
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG o GIF (Máx. 2MB)
-                    </p>
-                  </div>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    name="image"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        // Crear URL para vista previa
-                        const previewUrl = URL.createObjectURL(file);
-                        setSelectedImage(file);
-                        setPreviewUrl(previewUrl);
-                      }
-                    }}
-                  />
-                </label>
-              </div>
-              {/* Vista previa de la imagen */}
+              {!selectedImage ? (
+                <div className="flex items-center justify-center w-full">
+                  <label
+                    htmlFor="image-upload"
+                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        className="w-8 h-8 mb-4 text-gray-500"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">
+                          Haz clic para subir
+                        </span>{" "}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        PNG, JPG o GIF (Máx. 2MB)
+                      </p>
+                    </div>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      name="image"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        if (file) {
+                          // Crear URL para vista previa
+                          const previewUrl = URL.createObjectURL(file);
+                          setSelectedImage(file);
+                          setPreviewUrl(previewUrl);
+                        }
+                        setFormData({...formData, image: file})
+                      }}
+                    />
+                  </label>
+                </div>
+              ) : null}
+              {/* //TODO Vista previa de la imagen */}
               <div className="mt-4 flex flex-col items-center">
                 {previewUrl && (
                   <div className="relative">
@@ -158,8 +187,14 @@ export default function RegisterPage() {
             </div>
           </div>
         </div>
+        <button
+          type="submit"
+          className="cursor-pointer w-full bg-[#2e3237] hover:bg-[#393E46] text-white font-semibold py-2 rounded transition-all duration-200"
+        >
+          Crear Cuenta
+        </button>
 
-        <p className="text-center">
+        <p className="mt-5 text-center">
           ¿Ya tienes cuenta?{" "}
           <Link to={"/login"} className="text-blue-500">
             Iniciar sesion
