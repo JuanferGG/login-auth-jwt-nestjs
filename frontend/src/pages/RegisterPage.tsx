@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
+
+// TODO Hooks
 import { useState } from "react";
+import { useCreateUser } from "../hooks/useAuth";
 
 // TODO Icon's
 import { MdOutlineEmail, MdKey } from "react-icons/md";
@@ -8,31 +11,43 @@ import { BiIdCard, BiUser } from "react-icons/bi";
 export default function RegisterPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
+  const { mutate } = useCreateUser();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     image: null as File | null,
-  })
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const dataUser = new FormData();
-    dataUser.append("firstName", formData.firstName)
-    dataUser.append("lastName", formData.lastName)
-    dataUser.append("email", formData.email)
-    dataUser.append("password", formData.password)
+    dataUser.append("firstName", formData.firstName);
+    dataUser.append("lastName", formData.lastName);
+    dataUser.append("email", formData.email);
+    dataUser.append("password", formData.password);
     if (formData.image) {
-      dataUser.append("image", formData.image)
+      dataUser.append("image", formData.image);
     }
 
-    console.log(dataUser)
+    mutate(dataUser, {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        console.log(error)
+      }
+    })
+
   };
 
   return (
     <section className="flex bg-[#DFD0B8] min-h-screen max-h-fit w-full items-center justify-center">
-      <form onSubmit={handleSubmit} className="flex flex-col w-full items-center bg-white p-4 my-5 rounded-lg shadow-md sm:w-[700px] h-max">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full items-center bg-white p-4 my-5 rounded-lg shadow-md sm:w-[700px] h-max"
+      >
         <div>
           <h1 className="text-3xl text-center font-bold mb-4">Crear Cuenta</h1>
         </div>
@@ -47,7 +62,9 @@ export default function RegisterPage() {
               type="text"
               placeholder="Nombre completo"
               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, firstName: e.target.value })
+              }
               autoFocus
               required
             />
@@ -60,7 +77,9 @@ export default function RegisterPage() {
               type="text"
               placeholder="Apellido completo"
               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, lastName: e.target.value })
+              }
               autoFocus
               required
             />
@@ -73,7 +92,9 @@ export default function RegisterPage() {
               type="email"
               placeholder="Correo electrónico"
               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               autoFocus
               required
             />
@@ -88,7 +109,9 @@ export default function RegisterPage() {
               type="password"
               placeholder="Contraseña"
               className="border border-gray-300 rounded px-3 py-2 mb-6 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               required
             />
             {/* // TODO image - opcional */}
@@ -142,7 +165,7 @@ export default function RegisterPage() {
                           setSelectedImage(file);
                           setPreviewUrl(previewUrl);
                         }
-                        setFormData({...formData, image: file})
+                        setFormData({ ...formData, image: file });
                       }}
                     />
                   </label>
@@ -191,7 +214,7 @@ export default function RegisterPage() {
           type="submit"
           className="cursor-pointer w-full bg-[#2e3237] hover:bg-[#393E46] text-white font-semibold py-2 rounded transition-all duration-200"
         >
-          Crear Cuenta
+          Crear cuenta
         </button>
 
         <p className="mt-5 text-center">

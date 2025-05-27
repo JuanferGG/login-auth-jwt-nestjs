@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { login, logout } from "../Api/auth";
+import { login, logout, register } from "../Api/auth";
 import type { UserLogin } from "../Api/auth";
 import { useUserStore } from "./useUserStore";
+import { useMutation } from "@tanstack/react-query"
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,18 @@ export const useLogin = () => {
   };
 
   return { handleLogin, loading, error };
+};
+
+export const useCreateUser = () => {
+  return useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      // TODO: redirect to login page
+    },
+    onError: (err) => {
+      throw err;
+    }
+  })
 };
 
 export const useLogout = () => {

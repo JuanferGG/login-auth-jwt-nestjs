@@ -23,12 +23,12 @@ export default function HeaderComponent() {
       <div className="flex items-center gap-2">
         {/* User Data */}
         <div className="flex gap-2 items-center">
-          <img src={`${import.meta.env.VITE_BASE_API}${user?.image}`} className="w-11 h-11 border-2 border-gray-600 rounded-full" />
+          <img src={`${import.meta.env.VITE_BASE_API}${user?.image}`} className="w-11 h-11 border-2 border-gray-600 rounded-full object-cover" />
           <div className="flex flex-col">
             <h3 className="text-[#222831] font-bold text-left">Bienvenido</h3>
             <div className="flex gap-1.5">
-              <span className="text-gray-600 font-semibold">{user?.firstName}</span>
-              <span className="text-gray-600 font-semibold">{user?.lastName}</span>
+              <span className="text-gray-600 font-semibold capitalize">{user?.firstName}</span>
+              <span className="text-gray-600 font-semibold capitalize">{user?.lastName}</span>
             </div>
           </div>
         </div>
