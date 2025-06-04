@@ -36,7 +36,7 @@ export const useCreateUser = () => {
     onSuccess: () => {
       // TODO: redirect to login page
     },
-    onError: (err) => {
+    onError: (err: any) => {
       throw err;
     }
   })

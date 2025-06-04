@@ -1,17 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // TODO Hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCreateUser } from "../hooks/useAuth";
+import { useUserStore } from "../hooks/useUserStore";
 
 // TODO Icon's
 import { MdOutlineEmail, MdKey } from "react-icons/md";
 import { BiIdCard, BiUser } from "react-icons/bi";
+import { NotyfComponent } from "../components/UI/NotyfComponent";
 
 export default function RegisterPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const { mutate } = useCreateUser();
+  const { isAuthenticated } = useUserStore();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -32,15 +36,30 @@ export default function RegisterPage() {
     }
 
     mutate(dataUser, {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: () => {
+        NotyfComponent.success("Cuenta creada exitosamente");
+        NotyfComponent.success("Ahora inicia sesion");
+        navigate("/login");
       },
       onError: (error) => {
-        console.log(error)
-      }
-    })
-
+        const errors = error.response.data.message;
+        if (Array.isArray(errors)) {
+          errors.forEach((error) => {
+            NotyfComponent.error(error);
+          });
+          return;
+        }
+        NotyfComponent.error(errors);
+      },
+    });
   };
+
+  //! Redirección automática si ya está autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <section className="flex bg-[#DFD0B8] min-h-screen max-h-fit w-full items-center justify-center">

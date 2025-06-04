@@ -1,6 +1,6 @@
 // TODO CSS
-import "./App.css";
 import "notyf/notyf.min.css";
+import "./App.css";
 
 // TODO Pages
 import LoginPage from "./pages/LoginPage";
