@@ -31,9 +31,9 @@ export default function LoginPage() {
       .catch((error) => {
         const errors = error.response.data.message;
         if (Array.isArray(errors)) {
-          errors.forEach((error) => {
-            NotyfComponent.error(error);
-          });
+          errors.map((error) => {
+            NotyfComponent.error(error.message);
+          })
           return;
         }
         NotyfComponent.error(errors);
