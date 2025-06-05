@@ -11,12 +11,15 @@ import ProfilePage from "./pages/ProfilePage";
 
 // TODO libraries
 import { Route, Routes } from "react-router-dom";
+import LayoutPublicPages from "./components/layouts/LayoutPublicPages";
 
 function App() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+      <Route element={<LayoutPublicPages />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Route>
 
       {/* Protected Routes isAuthenticated */}
       <Route element={<ProtectedRoutes />}>
