@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useUserStore } from "../hooks/useUserStore";
-import HeaderComponent from "./Header/HeaderComponent";
+import { useUserStore } from "../../hooks/useUserStore";
+import HeaderComponent from "../Header/HeaderComponent";
 
 export default function ProtectedRoutes() {
   const navigate = useNavigate();

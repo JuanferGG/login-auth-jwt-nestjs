@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../hooks/useUserStore";
-import HeaderComponent from "../Header/HeaderComponent";
 
 export default function LayoutPublicPages() {
   const navigate = useNavigate();
@@ -27,10 +26,7 @@ export default function LayoutPublicPages() {
 
   return (
     <section className="bg-[#DFD0B8] min-h-screen w-full">
-      <HeaderComponent />
-      <div className="pt-16">
         <Outlet />
-      </div>
     </section>
   )
 }

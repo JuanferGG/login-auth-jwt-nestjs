@@ -27,8 +27,7 @@ export default function HeaderComponent() {
           <div className="flex flex-col">
             <h3 className="text-[#222831] font-bold text-left">Bienvenido</h3>
             <div className="flex gap-1.5">
-              <span className="text-gray-600 font-semibold capitalize">{user?.firstName}</span>
-              <span className="text-gray-600 font-semibold capitalize">{user?.lastName}</span>
+              <span className="text-gray-600 font-semibold capitalize truncate w-[12ch]">{user?.firstName + " " + user?.lastName}</span>
             </div>
           </div>
         </div>

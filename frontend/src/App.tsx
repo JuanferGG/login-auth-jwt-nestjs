@@ -5,7 +5,7 @@ import "./App.css";
 // TODO Pages
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import ProtectedRoutes from "./components/layouts/ProtectedRoutes";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 
