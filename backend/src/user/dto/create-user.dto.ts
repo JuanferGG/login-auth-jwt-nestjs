@@ -5,6 +5,7 @@ import {
   IsString,
   MinLength,
   Matches,
+  IsIn,
 } from 'class-validator';
 import { IsNotBlank } from 'src/assets/validators/IsNoBlank.validator';
 
@@ -27,6 +28,10 @@ export class CreateUserDto {
   @MinLength(8)
   @IsNotBlank({ message: 'La contraseña no puede estar vacía' })
   password: string;
+
+  @IsString()
+  @IsIn(['admin', 'user'], { message: 'El rol debe ser "admin" o "user"' })
+  role?: 'admin' | 'user' = 'user';
 
   @IsString()
   @IsOptional()

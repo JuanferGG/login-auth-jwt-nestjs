@@ -2,6 +2,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
 import {
   IsEmail,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -33,6 +34,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @MinLength(8)
   @IsNotBlank({ message: 'La contraseña no puede estar vacía' })
   password?: string;
+
+  @IsString()
+  @IsIn(['admin', 'user'], { message: 'El rol debe ser "admin" o "user"' })
+  role?: 'admin' | 'user' = 'user';
 
   @IsString()
   @IsOptional()
