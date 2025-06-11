@@ -14,7 +14,7 @@ export default function ProfilePage() {
     );
   }
 
-  const { firstName, lastName, email, image, createdAt } = user;
+  const { firstName, lastName, email, image, createdAt, role } = user;
   const joinDate = new Date(createdAt).toLocaleDateString("es-ES", {
     year: "numeric",
     month: "long",
@@ -61,10 +61,11 @@ export default function ProfilePage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-1 capitalize">
               {firstName} {lastName}
             </h2>
-            <p className="text-gray-600 mb-4">{email}</p>
-            <div className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+            <p className="text-gray-600">{email}</p>
+            <div className="inline-flex items-center px-3 py-1 mt-2 gap- rounded-full text-sm bg-green-100 text-green-800">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              Active
+              <b className="mr-1">Estado: </b>Active
+            <b className="ml-5 mr-1">Rol: </b>{role}
             </div>
           </div>
 
@@ -87,12 +88,14 @@ export default function ProfilePage() {
               </h3>
             </div>
 
-            <h3 className="font-bold text-xl text-gray-900 text-center sm:text-left">
-              Miembro Desde{" "}
-              <p className="text-gray-600 capitalize flex items-center gap-1 font-light">
-                <BiSolidCalendar className="text-[#222831]" /> {joinDate}
-              </p>
-            </h3>
+            <div className="flex w-full flex-wrap justify-around gap-1">
+              <h3 className="font-bold text-xl text-gray-900 text-center sm:text-left">
+                Miembro Desde{" "}
+                <p className="text-gray-600 capitalize flex items-center gap-1 font-light">
+                  <BiSolidCalendar className="text-[#222831]" /> {joinDate}
+                </p>
+              </h3>
+            </div>
           </div>
         </div>
       </div>

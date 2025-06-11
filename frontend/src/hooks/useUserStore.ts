@@ -6,6 +6,7 @@ interface User {
   lastName: string;
   email: string;
   password: string;
+  role: string;
   image: string;
   createdAt: string;
   updatedAt: string;

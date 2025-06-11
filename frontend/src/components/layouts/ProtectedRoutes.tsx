@@ -5,8 +5,10 @@ import HeaderComponent from "../Header/HeaderComponent";
 
 export default function ProtectedRoutes() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useUserStore();
+  const { isAuthenticated, user } = useUserStore();
   const [isLoading, setIsLoading] = useState(true);
+
+  console.log(user)
 
   useEffect(() => {
     if (!isAuthenticated) {
