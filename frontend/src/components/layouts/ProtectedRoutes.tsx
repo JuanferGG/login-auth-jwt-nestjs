@@ -8,8 +8,6 @@ export default function ProtectedRoutes() {
   const { isAuthenticated, user } = useUserStore();
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(user)
-
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");

@@ -85,6 +85,7 @@ export class UserService {
       id: userFind._id,
       firstName: userFind.firstName,
       lastName: userFind.lastName,
+      role: userFind.role,
     };
     const token = await this.jwtService.signAsync(payload);
 
