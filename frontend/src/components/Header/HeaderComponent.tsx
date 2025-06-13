@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 // TODO Icon's
 import { BiMenu } from "react-icons/bi";
+import logoVite from "../../assets/react.svg"
 
 export default function HeaderComponent() {
   const { user } = useUserStore();
@@ -17,7 +18,7 @@ export default function HeaderComponent() {
       <div className="flex items-center">
         <BiMenu className="block sm:hidden text-2xl" />
         <Link to={"/"} className="hidden sm:block">
-          <img src="./vite.svg" alt="logo_vite"></img>
+          <img src={logoVite} alt="logo_vite"></img>
         </Link>
       </div>
       <div className="flex items-center gap-2">

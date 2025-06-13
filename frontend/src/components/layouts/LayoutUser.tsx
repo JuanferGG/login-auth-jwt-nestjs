@@ -3,18 +3,23 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../hooks/useUserStore";
 import HeaderComponent from "../Header/HeaderComponent";
 
-export default function ProtectedRoutes() {
+export default function LayoutUser() {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useUserStore();
   const [isLoading, setIsLoading] = useState(true);
+  const roleUser = user?.role;
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
+    } else if (roleUser !== "user" && roleUser !== "admin") {
+      // si no es ni user ni admin, lo echamos
+      navigate("/");
     } else {
+      // si es user o admin, puede seguir navegando
       setIsLoading(false);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, roleUser, navigate]);
 
   if (isLoading) {
     return (
