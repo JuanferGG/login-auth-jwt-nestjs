@@ -21,6 +21,8 @@ import { unlink } from 'fs';
 import { LoginPipePipe } from './pipes/login-pipe.pipe';
 import { AuthGuard } from '../assets/guards/auth.guard';
 import { ValidateUpdatePipe } from './pipes/Update.pipe';
+import { RolesGuard } from 'src/assets/guards/roles.guard';
+import { Roles } from 'src/assets/decorators/roles.decorator';
 
 @Controller('user')
 export class UserController {
@@ -68,8 +70,10 @@ export class UserController {
     return this.userService.logout(res);
   }
 
-  @UseGuards(AuthGuard)
-  @Get()
+  // ! Obtener todos los usuarios
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('/getUsers')
+  @Roles('admin')
   findAll() {
     return this.userService.findAll();
   }
