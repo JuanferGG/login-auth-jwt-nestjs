@@ -36,6 +36,7 @@ Este proyecto implementa un sistema de autenticación completo utilizando JWT (J
   - Axios
   - React Router DOM
   - Notyf
+  - Zustand
 
 ## Estructura del Proyecto
 ```plaintext
