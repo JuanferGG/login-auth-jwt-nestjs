@@ -16,12 +16,12 @@ import Dashboard from "./pages/admin/Dashboard";
 import { Route, Routes } from "react-router-dom";
 import LayoutPublicPages from "./components/layouts/LayoutPublicPages";
 import LayoutUser from "./components/layouts/LayoutUser";
-import BillingPage from "./pages/admin/BillingPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
     <Routes>
+      {/** //* Public Pages */}
       <Route element={<LayoutPublicPages />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -36,7 +36,6 @@ function App() {
       {/* //* Protected Routes role Admin isAuthenticated */}
       <Route element={<LayoutAdmin />}>
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/billing" element={<BillingPage />} />
       </Route>
 
       {/* //* Not Found Page */}

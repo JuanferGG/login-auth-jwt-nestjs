@@ -12,7 +12,6 @@ import logoVite from "../../assets/react.svg"
 export default function HeaderComponent() {
   const { user } = useUserStore();
 
-
   return (
     <header className="w-full md:w-[90vw] px-2 py-2 flex justify-between bg-white rounded-b-xl fixed top-0 left-0 right-0 mx-auto z-50 shadow-2xl">
       <div className="flex items-center">
