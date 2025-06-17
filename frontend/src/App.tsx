@@ -11,6 +11,7 @@ import ProfilePage from "./pages/ProfilePage";
 // TODO Admin Page's
 import LayoutAdmin from "./components/layouts/LayoutAdmin";
 import Dashboard from "./pages/admin/Dashboard";
+import Users from "./pages/admin/Users";
 
 // TODO libraries
 import { Route, Routes } from "react-router-dom";
@@ -36,6 +37,7 @@ function App() {
       {/* //* Protected Routes role Admin isAuthenticated */}
       <Route element={<LayoutAdmin />}>
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/users" element={<Users />} />
       </Route>
 
       {/* //* Not Found Page */}

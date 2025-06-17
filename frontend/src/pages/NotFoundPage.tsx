@@ -7,7 +7,7 @@ function NotFoundPage() {
     <section className="flex flex-col gap-2 bg-[#DFD0B8] h-[100vh] w-full items-center justify-center">
       <div className="flex items-center align-middle text-9xl">
         <p className="-rotate-12">4</p>
-        <DiAptana className="text-red-400" />
+        <DiAptana className="text-red-400 animate-spin duration-[3000]" style={{ animationDuration: "5s" }} />
         <p className="rotate-12">4</p>
       </div>
       <h1 className="text-center px-2 font-bold text-xl">
