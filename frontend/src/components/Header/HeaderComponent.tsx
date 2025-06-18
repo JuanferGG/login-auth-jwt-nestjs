@@ -38,7 +38,7 @@ export default function HeaderComponent() {
               <Link
                 key={path}
                 to={path}
-                className="hidden sm:block text-[#222831] font-semibold px-2 py-2 hover:bg-[#222831] hover:text-white rounded transition-all duration-200"
+                className="hidden sm:block text-[#222831] font-semibold px-2 py-2 hover:text-blue-500 transition-all duration-200"
               >
                 {label}
               </Link>

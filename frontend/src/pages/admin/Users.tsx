@@ -2,9 +2,9 @@
 
 function Users() {
   return (
-    <section className="w-[100vw] mt-6 max-w-4xl">
-        Users
-    </section>
+    <div className="mt-6">
+      Users
+    </div>
   )
 }
 

@@ -2,8 +2,8 @@
 export default function HomePage() {
   
   return (
-    <section className="w-[100vw] mt-6 max-w-4xl">
-        Home Page
-    </section>
+    <div>
+       Home Page
+    </div>
   )
 }

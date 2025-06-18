@@ -30,9 +30,9 @@ export default function LayoutAdmin() {
   return (
     <section className="bg-[#DFD0B8] min-h-screen w-full">
       <HeaderComponent />
-      <div className="pt-16">
+      <section className="pt-16 w-screen ">
         <Outlet />
-      </div>
+      </section>
     </section>
   );
 }
