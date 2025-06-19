@@ -2,10 +2,10 @@
 
 function Dashboard() {
   return (
-    <section className="w-[100vw] mt-6 max-w-4xl">
-        Dashboard
+    <section className="mt-6 m-auto w-[90vw]">
+      <h1 className="font-bold text-[#222831] mb-4 text-4xl">Dashboard</h1>
     </section>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

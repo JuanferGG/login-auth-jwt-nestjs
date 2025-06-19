@@ -15,7 +15,7 @@ export interface UserRegister {
   image?: string;
 }
 
-// Usar la interfaz como tipo en el parámetro
+// TODO Login del usuario
 export const login = async (user: UserLogin) => {
   return await axios.post("/user/login", user).catch((err) => {
     // console.log(err);
@@ -23,6 +23,7 @@ export const login = async (user: UserLogin) => {
   });
 };
 
+// TODO Registro de usuario
 export const register = async (user : FormData ) => {
   return await axios.post("/user/RegisterUser", user, { 
     headers: {
@@ -39,6 +40,7 @@ export const register = async (user : FormData ) => {
   })
 }
 
+// TODO Salida del usuario
 export const logout = async () => {
   return await axios
     .post("/user/logout")

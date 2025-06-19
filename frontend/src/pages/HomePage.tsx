@@ -2,7 +2,7 @@
 export default function HomePage() {
   
   return (
-    <div>
+    <div className="mt-6">
        Home Page
     </div>
   )
