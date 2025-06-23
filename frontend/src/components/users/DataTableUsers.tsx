@@ -1,20 +1,26 @@
-// TODO Component's
 import { DataGrid } from "@mui/x-data-grid";
-
-// TODO Type's
 import type { GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import type { User } from "../../Api/users";
 
 export default function DataTableUsers({ users }: { users: User[] }) {
-  // Transformamos los usuarios en rows válidos para MUI
   const rows: GridRowsProp = users.map((user) => ({
-    id: user._id, // ⚠️ "id" es obligatorio
+    id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
     role: user.role,
     createdAt: new Date(user.createdAt).toLocaleString(),
   }));
+
+  const handleEdit = (id: string) => {
+    console.log("Editar usuario:", id);
+    // Aquí puedes navegar a la ruta de edición o abrir un modal
+  };
+
+  const handleDelete = (id: string) => {
+    console.log("Eliminar usuario:", id);
+    // Aquí puedes lanzar una confirmación y luego eliminar el usuario
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 220 },
@@ -23,6 +29,29 @@ export default function DataTableUsers({ users }: { users: User[] }) {
     { field: "email", headerName: "Correo", width: 230 },
     { field: "role", headerName: "Rol", width: 120 },
     { field: "createdAt", headerName: "Fecha de Registro", width: 200 },
+    {
+      field: "actions",
+      headerName: "Acciones",
+      width: 180,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <div className="flex items-center justify-center flex-wrap h-full gap-2">
+          <button
+            className="cursor-pointer px-2 bg-green-500 font-semibold rounded-md h-[40px] text-white flex items-center"
+            onClick={() => handleEdit(params.row)}
+          >
+            Editar
+          </button>
+          <button
+            className="cursor-pointer px-2 bg-red-500 font-semibold rounded-md h-[40px] text-white flex items-center"
+            onClick={() => handleDelete(params.row)}
+          >
+            Eliminar
+          </button>
+        </div>
+      ),
+    },
   ];
 
   return (
