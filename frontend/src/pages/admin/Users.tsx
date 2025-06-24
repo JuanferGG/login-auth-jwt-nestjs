@@ -1,5 +1,5 @@
 // TODO Component's
-import DataTableUsers from "../../components/users/DataTableUsers";
+import DataTableUsers from "../../components/DataTables/DataTableUsers";
 
 // TODO Hooks - Api's
 import { useGetUsers } from "../../hooks/useUsers";

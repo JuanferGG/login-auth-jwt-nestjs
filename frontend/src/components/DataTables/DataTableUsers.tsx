@@ -2,6 +2,16 @@ import { DataGrid } from "@mui/x-data-grid";
 import type { GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import type { User } from "../../Api/users";
 
+type UserRow = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  createdAt: string;
+};
+
+// TODO Row para el DataGrid si es necesario agregar mas aqui y luego en el columns
 export default function DataTableUsers({ users }: { users: User[] }) {
   const rows: GridRowsProp = users.map((user) => ({
     id: user._id,
@@ -12,16 +22,17 @@ export default function DataTableUsers({ users }: { users: User[] }) {
     createdAt: new Date(user.createdAt).toLocaleString(),
   }));
 
-  const handleEdit = (id: string) => {
-    console.log("Editar usuario:", id);
+  const handleEdit = (user: UserRow) => {
+    console.log("Editar usuario:", user.id);
     // Aquí puedes navegar a la ruta de edición o abrir un modal
   };
 
-  const handleDelete = (id: string) => {
-    console.log("Eliminar usuario:", id);
+  const handleDelete = (user: UserRow) => {
+    console.log("Eliminar usuario:", user.id);
     // Aquí puedes lanzar una confirmación y luego eliminar el usuario
   };
 
+  // TODO Columnas del dataSet
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 220 },
     { field: "firstName", headerName: "Nombre", width: 150 },

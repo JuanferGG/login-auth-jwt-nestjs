@@ -85,6 +85,7 @@ export class UserController {
 
   //! Actualizar usuario
   @Patch(':id')
+  @Roles('admin')
   @UseInterceptors(FileInterceptor('image', multerConfig))
   update(
     @Param('id') id: string,
