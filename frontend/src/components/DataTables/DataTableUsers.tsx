@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import type { User } from "../../Api/users";
+import EditUserModal from "../modals/Users/EditUser";
+import DeleteUserModal from "../modals/Users/DeleteUser";
 
 type UserRow = {
   id: string;
@@ -11,8 +14,11 @@ type UserRow = {
   createdAt: string;
 };
 
-// TODO Row para el DataGrid si es necesario agregar mas aqui y luego en el columns
 export default function DataTableUsers({ users }: { users: User[] }) {
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
+
   const rows: GridRowsProp = users.map((user) => ({
     id: user._id,
     firstName: user.firstName,
@@ -23,16 +29,15 @@ export default function DataTableUsers({ users }: { users: User[] }) {
   }));
 
   const handleEdit = (user: UserRow) => {
-    console.log("Editar usuario:", user.id);
-    // Aquí puedes navegar a la ruta de edición o abrir un modal
+    setSelectedUser(user);
+    setIsOpenEditModal(true);
   };
 
   const handleDelete = (user: UserRow) => {
-    console.log("Eliminar usuario:", user.id);
-    // Aquí puedes lanzar una confirmación y luego eliminar el usuario
+    setIsOpenDeleteModal(true)
+    setSelectedUser(user)
   };
 
-  // TODO Columnas del dataSet
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 220 },
     { field: "firstName", headerName: "Nombre", width: 150 },
@@ -47,7 +52,7 @@ export default function DataTableUsers({ users }: { users: User[] }) {
       sortable: false,
       filterable: false,
       renderCell: (params) => (
-        <div className="flex items-center justify-center flex-wrap h-full gap-2">
+        <div className="flex items-center justify-center flex-wrap h-full gap-2 w-full">
           <button
             className="cursor-pointer px-2 bg-green-500 font-semibold rounded-md h-[40px] text-white flex items-center"
             onClick={() => handleEdit(params.row)}
@@ -66,13 +71,26 @@ export default function DataTableUsers({ users }: { users: User[] }) {
   ];
 
   return (
-    <div style={{ height: 500, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        disableRowSelectionOnClick
-        sx={{ backgroundColor: "white", borderRadius: 2 }}
+    <>
+      <div style={{ height: 500, width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          disableRowSelectionOnClick
+          sx={{ backgroundColor: "white", borderRadius: 2 }}
+        />
+      </div>
+
+      <EditUserModal
+        IsOpenView={isOpenEditModal}
+        setOpenView={setIsOpenEditModal}
+        user={selectedUser}
       />
-    </div>
+      <DeleteUserModal 
+        IsOpenView={isOpenDeleteModal}
+        setOpenView={setIsOpenDeleteModal}
+        user={selectedUser}
+      />
+    </>
   );
 }
