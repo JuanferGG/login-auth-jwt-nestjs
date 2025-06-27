@@ -23,3 +23,14 @@ export const getUsers = async () => {
         throw err
       })
 }
+
+export const deleteUser = async ( id: string ) => {
+  return await axios 
+    .delete(`/user/${id}`)
+    .then((res) => {
+      return res
+    })
+    .catch((err) => {
+      throw err
+    })
+}

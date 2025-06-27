@@ -1,4 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import { useDeteleUser } from "../../../hooks/useUsers";
+import { NotyfComponent } from "../../UI/NotyfComponent";
 
 interface EditUserModalProps {
   IsOpenView: boolean;
@@ -18,6 +20,20 @@ export default function DeleteUserModal({
   setOpenView,
   user,
 }: EditUserModalProps) {
+  const { mutate: deleteUser } = useDeteleUser();
+
+  const handleDelete = () => {
+    deleteUser(user?.id || "", {
+      onSuccess: () => {
+        NotyfComponent.success("Usuario eliminado exitosamente");
+      },
+      onError: (err) => {
+        console.log(err);
+        NotyfComponent.error("Algo ha salido mal");
+      },
+    });
+  };
+
   return (
     <Dialog
       open={IsOpenView}
@@ -50,12 +66,20 @@ export default function DeleteUserModal({
             ) : (
               <p>No hay datos para mostrar</p>
             )}
-            <button
-              className="btn_primary"
-              onClick={() => setOpenView(false)}
-            >
-              Cancelar
-            </button>
+            <div className="flex gap-2">
+              <button
+                className="btn_primary"
+                onClick={() => setOpenView(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="cursor-pointer px-2 bg-red-500 font-semibold rounded-md h-[40px] text-white flex items-center"
+                onClick={() => handleDelete()}
+              >
+                Eliminar
+              </button>
+            </div>
           </DialogPanel>
         </div>
       </div>
