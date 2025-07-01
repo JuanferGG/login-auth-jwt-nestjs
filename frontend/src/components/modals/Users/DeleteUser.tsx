@@ -1,5 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useDeteleUser } from "../../../hooks/useUsers";
+import { useUserStore } from "../../../hooks/useUserStore";
 import { NotyfComponent } from "../../UI/NotyfComponent";
 
 interface EditUserModalProps {
@@ -15,17 +16,24 @@ interface EditUserModalProps {
   } | null;
 }
 
+
 export default function DeleteUserModal({
   IsOpenView,
   setOpenView,
   user,
 }: EditUserModalProps) {
+  const userStore = useUserStore().user
   const { mutate: deleteUser } = useDeteleUser();
 
   const handleDelete = () => {
+    if (user?.id === userStore?._id){
+      return NotyfComponent.error("No puedes eliminar tu cuenta")
+    }
+
     deleteUser(user?.id || "", {
       onSuccess: () => {
         NotyfComponent.success("Usuario eliminado exitosamente");
+        setOpenView(false)
       },
       onError: (err) => {
         console.log(err);
