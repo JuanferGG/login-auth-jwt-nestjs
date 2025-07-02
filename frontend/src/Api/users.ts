@@ -34,3 +34,16 @@ export const deleteUser = async ( id: string ) => {
       throw err
     })
 }
+
+export const updateUser = async ( id: string, updateUser: FormData ) => {
+  return await axios
+    .patch(`/user/${id}`, updateUser, {
+      headers: { "Content-Type": "multipart/form-data" }
+    })
+    .then((res) => {
+      return res
+    })
+    .catch((err) => {
+      throw err
+    })
+}
