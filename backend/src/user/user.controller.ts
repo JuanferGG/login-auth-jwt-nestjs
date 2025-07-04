@@ -89,7 +89,7 @@ export class UserController {
   @UseInterceptors(FileInterceptor('image', multerConfig))
   update(
     @Param('id') id: string,
-    @Body(new ValidateUpdatePipe) body: { value: any; errors: any },
+    @Body(new ValidateUpdatePipe()) body: { value: any; errors: any },
     @UploadedFile() image: Express.Multer.File,
   ) {
     // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
@@ -105,6 +105,30 @@ export class UserController {
       // throw new HttpException("Error de validación", 400)
     }
     return this.userService.update(id, body.value, image);
+  }
+
+  //! Actualizar Usuario sin rol, UserMe
+  @UseGuards(AuthGuard)
+  @Patch('me/:id')
+  @UseInterceptors(FileInterceptor('image', multerConfig))
+  updateUserMe(
+    @Param('id') id: string,
+    @Body(new ValidateUpdatePipe()) body: { value: any; errors: any },
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
+    if (body.errors) {
+      // TODO: Eliminar imagen si se subió
+      if (image?.path) {
+        unlink(image.path, (err) => {
+          if (err) throw err;
+        });
+      }
+      throw new BadRequestException(body.errors);
+      // ? Una Exception mas corta para el usuario final
+      // throw new HttpException("Error de validación", 400)
+    }
+    return this.userService.updateUserMe(id, body.value, image);
   }
 
   //! Eliminar usuario

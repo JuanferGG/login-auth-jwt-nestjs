@@ -1,13 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { UpdateUserMeDto } from './dto/update-userMe.dto';
 import { User } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { unlink } from 'fs/promises';
 import { join } from 'path';
 import { compare, hash } from 'bcrypt';
-import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 
@@ -111,10 +112,12 @@ export class UserService {
     return { message: 'Logout exitoso' };
   }
 
+  // TODO: Funcion para traer todos los usuarios
   findAll() {
     return this.UserModel.find().exec();
   }
 
+  // TODO: Funcion para traer un usuario por su id
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
@@ -123,6 +126,57 @@ export class UserService {
   async update(
     id: string,
     updateUserDto: UpdateUserDto,
+    image?: Express.Multer.File,
+  ) {
+    if (!isValidObjectId(id)) {
+      throw new HttpException('El id no es valido', 401);
+    }
+    const userFound = await this.UserModel.findById(id);
+    const emailFound = await this.UserModel.findOne({
+      email: updateUserDto.email,
+    });
+    const { password } = updateUserDto;
+
+    if (password?.trim()) {
+      const saltOrRounds = 10;
+      const plainToHash = await hash(password, saltOrRounds);
+      updateUserDto.password = plainToHash;
+    }
+
+    if (!userFound) {
+      if (image?.path) {
+        await unlink(image.path);
+      }
+      throw new HttpException('El usuario no existe', 400);
+    }
+
+    if (emailFound && emailFound.email !== userFound.email) {
+      if (image?.path) {
+        await unlink(image.path);
+      }
+      throw new HttpException('El Email ya esta en uso', 401);
+    }
+
+    if (image) {
+      await this.deleteImage(userFound.image);
+    }
+
+    const updateUser = await this.UserModel.findByIdAndUpdate(
+      id,
+      {
+        ...updateUserDto,
+        image: image ? `/uploads/Users/${image.filename}` : userFound.image,
+      },
+      { new: true },
+    );
+
+    return { message: 'Usuario actualizado exitosamente', updateUser };
+  }
+
+  // TODO: Funcion para actualizar el usuario sin su rol
+  async updateUserMe(
+    id: string,
+    updateUserDto: UpdateUserMeDto,
     image?: Express.Multer.File,
   ) {
     if (!isValidObjectId(id)) {
