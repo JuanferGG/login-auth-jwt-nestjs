@@ -7,7 +7,9 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export class ValidateUpdatePipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
     const dto = plainToInstance(UpdateUserDto, value);
-    const errors = await validate(dto);
+    const errors = await validate(dto, {
+      whitelist: true,
+    });
     
     if (errors.length > 0) {
       const formattedErrors = errors.flatMap((err) => {

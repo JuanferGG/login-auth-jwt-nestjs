@@ -7,7 +7,9 @@ import { LoginUserDto } from '../dto/login-user.dto';
 export class LoginPipePipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
     const dto = plainToInstance(LoginUserDto, value);
-    const errors = await validate(dto);
+    const errors = await validate(dto, {
+      whitelist: true,
+    });
 
     if (errors.length > 0) {
       const formattedErrors = errors.flatMap((err) => {

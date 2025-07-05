@@ -23,6 +23,7 @@ import { AuthGuard } from '../assets/guards/auth.guard';
 import { ValidateUpdatePipe } from './pipes/Update.pipe';
 import { RolesGuard } from 'src/assets/guards/roles.guard';
 import { Roles } from 'src/assets/decorators/roles.decorator';
+import { UpdateUserMe } from './pipes/UpdateUserMe.pipe';
 
 @Controller('user')
 export class UserController {
@@ -45,7 +46,7 @@ export class UserController {
       }
       throw new BadRequestException(body.errors);
       // ? Una Exception mas corta para el usuario final
-      // throw new HttpException("Error de validación", 400)
+      // ? throw new HttpException("Error de validación", 400)
     }
     // TODO: Continuar si todo está bien ✅
     return this.userService.create(body.value, image);
@@ -84,6 +85,7 @@ export class UserController {
   }
 
   //! Actualizar usuario
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
   @Roles('admin')
   @UseInterceptors(FileInterceptor('image', multerConfig))
@@ -113,7 +115,7 @@ export class UserController {
   @UseInterceptors(FileInterceptor('image', multerConfig))
   updateUserMe(
     @Param('id') id: string,
-    @Body(new ValidateUpdatePipe()) body: { value: any; errors: any },
+    @Body(new UpdateUserMe()) body: { value: any; errors: any },
     @UploadedFile() image: Express.Multer.File,
   ) {
     // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
@@ -132,7 +134,9 @@ export class UserController {
   }
 
   //! Eliminar usuario
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

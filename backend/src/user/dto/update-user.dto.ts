@@ -3,10 +3,8 @@ import { CreateUserDto } from './create-user.dto';
 import {
   IsEmail,
   IsIn,
-  IsNotEmpty,
   IsOptional,
   IsString,
-  Matches,
   MinLength,
 } from 'class-validator';
 import { IsNotBlank } from 'src/assets/validators/IsNoBlank.validator';
@@ -36,8 +34,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   password?: string;
 
   @IsString()
+  @IsOptional()
   @IsIn(['admin', 'user'], { message: 'El rol debe ser "admin" o "user"' })
-  role?: 'admin' | 'user' = 'user';
+  role?: 'admin' | 'user';
 
   @IsString()
   @IsOptional()

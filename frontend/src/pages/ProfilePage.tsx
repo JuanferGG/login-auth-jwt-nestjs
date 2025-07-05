@@ -1,10 +1,17 @@
+import { useState } from "react";
 import { useUserStore } from "../hooks/useUserStore";
 
 //TODO Icon's
-import { BiMailSend, BiSolidCalendar, BiUser } from "react-icons/bi";
+import { BiMailSend, BiPencil, BiSolidCalendar, BiUser } from "react-icons/bi";
+import EditUserMe from "../components/modals/Users/EditUserMe";
 
 export default function ProfilePage() {
   const { user } = useUserStore();
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+
+  const handleEdit = () => {
+    setIsOpenEditModal(true);
+  };
 
   if (!user) {
     return (
@@ -33,7 +40,21 @@ export default function ProfilePage() {
       {/* Profile Card */}
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* Cover Section */}
-        <div className="h-28 bg-gradient-to-r from-[#948979] to-[#393E46]"></div>
+        <div className="h-28 bg-gradient-to-r from-[#948979] to-[#393E46] relative">
+          <button
+            onClick={handleEdit}
+            className="absolute top-2 right-2 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
+          >
+            <BiPencil className="text-white text-xl" />
+
+            {/* //TODO ModalEditUserMe */}
+            <EditUserMe 
+              IsOpenView={isOpenEditModal}
+              setOpenView={setIsOpenEditModal}
+              user={user}
+            />
+          </button>
+        </div>
 
         {/* Profile Info */}
         <div className="relative px-6 pb-6">
@@ -65,7 +86,8 @@ export default function ProfilePage() {
             <div className="inline-flex items-center px-3 py-1 mt-2 gap- rounded-full text-sm bg-green-100 text-green-800">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
               <b className="mr-1">Estado: </b>Active
-            <b className="ml-5 mr-1">Rol: </b>{role}
+              <b className="ml-5 mr-1">Rol: </b>
+              {role}
             </div>
           </div>
 
