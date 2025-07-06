@@ -1,7 +1,8 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useState, useEffect } from "react";
-import { useUpdateUser } from "../../../hooks/useUsers";
+import { useUpdateUserMe } from "../../../hooks/useUsers";
 import { NotyfComponent } from "../../UI/NotyfComponent";
+import { useUserStore } from "../../../hooks/useUserStore";
 
 interface EditUserMeProps {
   IsOpenView: boolean;
@@ -32,6 +33,9 @@ export default function EditUserMe({
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  const { setUser } = useUserStore();
+  const token = useUserStore.getState().token;
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -45,7 +49,7 @@ export default function EditUserMe({
     }
   }, [user]);
 
-  const { mutate: updateUser } = useUpdateUser();
+  const { mutate: updateUser } = useUpdateUserMe();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -83,19 +87,25 @@ export default function EditUserMe({
     updateUser(
       { id: user?._id || "", data },
       {
-        onSuccess: () => {
+        onSuccess: (res) => {
+          const updatedUser = res.data.updateUser;
+
+          if (token) {
+            setUser(updatedUser, token);
+          }
+
           NotyfComponent.success("Usuario actualizado exitosamente");
           setOpenView(false);
         },
         onError: (error) => {
-          const errors = error.response.data.message;
+          const errors = error.response?.data?.message;
           if (Array.isArray(errors)) {
             errors.map((error) => {
               NotyfComponent.error(error.message);
             });
             return;
           }
-          NotyfComponent.error(errors);
+          NotyfComponent.error(errors || "Error al actualizar usuario");
         },
       }
     );
@@ -149,7 +159,7 @@ export default function EditUserMe({
                   />
                 </div>
 
-                <div>
+                <div className="flex flex-col items-center">
                   <label className="block font-semibold mb-1">Imagen</label>
                   <img
                     src={previewUrl || "/placeholder.jpg"}
