@@ -46,7 +46,7 @@ export default function RegisterPage() {
         if (Array.isArray(errors)) {
           errors.map((error) => {
             NotyfComponent.error(error.message);
-          })
+          });
           return;
         }
         NotyfComponent.error(errors);
@@ -68,7 +68,12 @@ export default function RegisterPage() {
         className="flex flex-col w-full items-center bg-white p-4 my-5 rounded-lg shadow-md sm:w-[700px] h-max"
       >
         <div>
-          <h1 className="text-3xl text-center font-bold mb-4">Crear Cuenta</h1>
+          <h1 className="text-4xl font-bold mb-2 text-center text-[#222831]">
+            Crear Cuenta
+          </h1>
+          <h2 className="text-[17px] text-center text-gray-600">
+            Crea tu cuenta y empieza a disfrutar de nuestros servicios.
+          </h2>
         </div>
         <div className="flex flex-col sm:flex sm:flex-row gap-2 w-full">
           <div className="left w-full">
@@ -205,6 +210,7 @@ export default function RegisterPage() {
                       onClick={() => {
                         // Limpiar la imagen seleccionada
                         setSelectedImage(null);
+                        setFormData({ ...formData, image: null });
                         setPreviewUrl("");
                       }}
                     >
