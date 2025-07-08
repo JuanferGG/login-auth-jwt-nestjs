@@ -85,7 +85,7 @@ export default function EditUserModal({
     <Dialog
       open={IsOpenView}
       onClose={() => setOpenView(false)}
-      className="relative z-10"
+      className="relative z-100"
     >
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
       <div className="modalPosition">
@@ -99,7 +99,7 @@ export default function EditUserModal({
             {user ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block font-semibold">Nombre</label>
+                  <label className="block mb-2 font-semibold">Nombre:</label>
                   <input
                     type="text"
                     name="firstName"
@@ -110,7 +110,7 @@ export default function EditUserModal({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold">Apellido</label>
+                  <label className="block mb-2 font-semibold">Apellido:</label>
                   <input
                     type="text"
                     name="lastName"
@@ -121,7 +121,7 @@ export default function EditUserModal({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold">Correo</label>
+                  <label className="block mb-2 font-semibold">Correo:</label>
                   <input
                     type="email"
                     name="email"
@@ -132,7 +132,7 @@ export default function EditUserModal({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold">Rol</label>
+                  <label className="block mb-2 font-semibold">Rol:</label>
                   <select
                     name="role"
                     value={formData.role}

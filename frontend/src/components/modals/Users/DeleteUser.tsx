@@ -46,18 +46,18 @@ export default function DeleteUserModal({
     <Dialog
       open={IsOpenView}
       onClose={() => setOpenView(false)}
-      className="relative z-10"
+      className="relative z-100"
     >
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
       <div className="modalPosition">
         <div className="modalContainer">
           <DialogPanel className="dialogPanel p-6">
-            <h2 className="text-2xl font-bold mb-2">Eliminar Usuario</h2>
+            <h2 className="text-3xl font-bold mb-2">Eliminar Usuario</h2>
             <p className="text-lg mb-2">
               ¿Estás seguro de que deseas eliminar este usuario?
             </p>
             {user ? (
-              <div className="space-y-2">
+              <div className="space-y-2 mb-4 text-xl">
                 <p>
                   <strong>Nombre:</strong> {user.firstName}
                 </p>

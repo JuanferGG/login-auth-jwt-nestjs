@@ -13,6 +13,7 @@ interface EditUserMeProps {
     lastName: string;
     email: string;
     role: string;
+    password: string;
     image: string;
     createdAt: string;
   } | null;
@@ -27,7 +28,7 @@ export default function EditUserMe({
     firstName: "",
     lastName: "",
     email: "",
-    role: "user",
+    password: "",
     image: null as File | null,
   });
 
@@ -42,7 +43,7 @@ export default function EditUserMe({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role,
+        password: "",
         image: null,
       });
     }
@@ -81,6 +82,7 @@ export default function EditUserMe({
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);
     data.append("email", formData.email);
+    data.append("password", formData.password);
     if (formData.image) {
       data.append("image", formData.image);
     }
@@ -112,7 +114,7 @@ export default function EditUserMe({
     <Dialog
       open={IsOpenView}
       onClose={() => setOpenView(false)}
-      className="relative z-10"
+      className="relative z-100"
     >
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
       <div className="modalPosition">
@@ -123,7 +125,7 @@ export default function EditUserMe({
             {user ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block font-semibold">Nombre</label>
+                  <label className="block mb-2 font-semibold">Nombre:</label>
                   <input
                     type="text"
                     name="firstName"
@@ -134,7 +136,7 @@ export default function EditUserMe({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold">Apellido</label>
+                  <label className="block mb-2 font-semibold">Apellido:</label>
                   <input
                     type="text"
                     name="lastName"
@@ -145,13 +147,28 @@ export default function EditUserMe({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold">Correo</label>
+                  <label className="block mb-2 font-semibold">Correo:</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <h5 className="text-left mb-2 font-semibold flex items-center gap-1">
+                    Contraseña:
+                  </h5>
+                  <input
+                    type="password"
+                    placeholder="Contraseña"
+                    className="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     required
                   />
                 </div>
