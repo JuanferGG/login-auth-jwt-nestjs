@@ -13,7 +13,7 @@ interface EditUserMeProps {
     lastName: string;
     email: string;
     role: string;
-    password: string;
+    password: string | null;
     image: string;
     createdAt: string;
   } | null;
@@ -24,12 +24,18 @@ export default function EditUserMe({
   setOpenView,
   user,
 }: EditUserMeProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string | null;
+    image: File | null;
+  }>({
     firstName: "",
     lastName: "",
     email: "",
-    password: "",
-    image: null as File | null,
+    password: null,
+    image: null,
   });
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -43,7 +49,7 @@ export default function EditUserMe({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        password: "",
+        password: null,
         image: null,
       });
     }
@@ -82,7 +88,9 @@ export default function EditUserMe({
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);
     data.append("email", formData.email);
-    data.append("password", formData.password);
+    if (formData.password) {
+      data.append("password", formData.password);
+    }
     if (formData.image) {
       data.append("image", formData.image);
     }
@@ -169,7 +177,6 @@ export default function EditUserMe({
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
-                    required
                   />
                 </div>
 

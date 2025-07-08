@@ -27,7 +27,6 @@ export class UpdateUserMeDto {
   @IsString()
   @IsOptional()
   @MinLength(8)
-  @IsNotBlank({ message: 'La contraseña no puede estar vacía' })
   password?: string;
 
   @IsString()
