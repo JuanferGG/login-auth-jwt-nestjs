@@ -105,6 +105,7 @@ export default function EditUserMe({
           }
           NotyfComponent.success("Usuario actualizado exitosamente");
           setOpenView(false);
+          setPreviewUrl(null);
         },
         onError: (error) => {
           const errors = error.response?.data?.message;
