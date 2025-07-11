@@ -84,6 +84,19 @@ export default function EditUserMe({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Verificar si hay cambios en los datos
+    const hasChanges = 
+      formData.firstName !== user?.firstName ||
+      formData.lastName !== user?.lastName ||
+      formData.email !== user?.email ||
+      formData.password !== null ||
+      formData.image !== null;
+
+    if (!hasChanges) {
+      NotyfComponent.error("No se han realizado cambios");
+      return;
+    }
+
     const data = new FormData();
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);

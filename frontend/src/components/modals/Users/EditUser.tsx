@@ -54,6 +54,17 @@ export default function EditUserModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (
+      user &&
+      formData.firstName === user.firstName &&
+      formData.lastName === user.lastName &&
+      formData.email === user.email &&
+      formData.role === user.role
+    ) {
+      NotyfComponent.error("No se han realizado cambios.");
+      return;
+    }
+
     const data = new FormData();
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);
