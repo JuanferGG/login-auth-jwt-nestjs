@@ -85,7 +85,7 @@ export default function EditUserMe({
     e.preventDefault();
 
     // Verificar si hay cambios en los datos
-    const hasChanges = 
+    const hasChanges =
       formData.firstName !== user?.firstName ||
       formData.lastName !== user?.lastName ||
       formData.email !== user?.email ||
@@ -93,7 +93,10 @@ export default function EditUserMe({
       formData.image !== null;
 
     if (!hasChanges) {
-      NotyfComponent.error("No se han realizado cambios");
+      NotyfComponent.open({
+        type: "warning",
+        message: "No se han realizado cambios.",
+      });
       return;
     }
 

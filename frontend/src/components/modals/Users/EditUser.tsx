@@ -61,7 +61,10 @@ export default function EditUserModal({
       formData.email === user.email &&
       formData.role === user.role
     ) {
-      NotyfComponent.error("No se han realizado cambios.");
+      NotyfComponent.open({
+        type: "warning",
+        message: "No se han realizado cambios."
+      })
       return;
     }
 
