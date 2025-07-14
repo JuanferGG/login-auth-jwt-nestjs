@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useUserStore } from "../hooks/useUserStore";
 
 //TODO Icon's
-import { BiMailSend, BiPencil, BiSolidCalendar, BiUser } from "react-icons/bi";
+import { BiMailSend, BiPencil, BiSolidCalendar, BiUser, BiSolidUser } from "react-icons/bi";
 import EditUserMe from "../components/modals/Users/EditUserMe";
 
 export default function ProfilePage() {
@@ -31,14 +31,10 @@ export default function ProfilePage() {
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
   return (
-    <section className="mx-auto w-[100vw] mt-6 max-w-4xl">
-      <h1 className="flex items-center text-4xl font-bold text-[#222831] mb-6 border-b-2 pb-1 border-[#393E46] rounded-b-[4px] ">
-        {" "}
-        <BiUser className="text-[#222831]" />
-        Perfil
-      </h1>
+    <section className="mt-6 m-auto w-[90vw] flex flex-col">
+      <h1 className="flex gap-1 font-bold text-[#222831] mb-4 text-5xl"><BiSolidUser/> Perfil</h1>
       {/* Profile Card */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden sm:w-[60vw] m-auto">
         {/* Cover Section */}
         <div className="h-28 bg-gradient-to-r from-[#948979] to-[#393E46] relative">
           <button
@@ -48,7 +44,7 @@ export default function ProfilePage() {
             <BiPencil className="text-white text-xl" />
 
             {/* //TODO ModalEditUserMe */}
-            <EditUserMe 
+            <EditUserMe
               IsOpenView={isOpenEditModal}
               setOpenView={setIsOpenEditModal}
               user={user}

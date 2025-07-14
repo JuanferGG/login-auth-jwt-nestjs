@@ -24,8 +24,10 @@ export default function SubMenuProfile() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <MenuButton className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 
-        px-3 py-2 text-sm font-semibold text-gray-900 ring-gray-300 ring-inset hover:bg-gray-50">
+        <MenuButton
+          className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 
+        px-3 py-2 text-sm font-semibold text-gray-900 ring-gray-300 ring-inset hover:bg-gray-50"
+        >
           {/* // TODO Svg ... */}
           <svg
             xmlns="http://www.w3.org/2000/svg"

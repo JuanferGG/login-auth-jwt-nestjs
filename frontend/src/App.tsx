@@ -13,13 +13,23 @@ import LayoutAdmin from "./components/layouts/LayoutAdmin";
 import Dashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
 
-// TODO libraries
+// TODO libraries & components
+import { useEffect } from "react";
+import { useUserStore } from "./hooks/useUserStore";
 import { Route, Routes } from "react-router-dom";
 import LayoutPublicPages from "./components/layouts/LayoutPublicPages";
 import LayoutUser from "./components/layouts/LayoutUser";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
+  const checkSessionExpiration = useUserStore(
+    (state) => state.checkSessionExpiration
+  );
+
+  useEffect(() => {
+    checkSessionExpiration();
+  }, [checkSessionExpiration]);
+
   return (
     <Routes>
       {/** //* Public Pages */}
@@ -42,7 +52,6 @@ function App() {
 
       {/* //* Not Found Page */}
       <Route path="*" element={<NotFoundPage />} />
-
     </Routes>
   );
 }

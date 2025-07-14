@@ -1,11 +1,9 @@
 import {
   IsEmail,
-  IsNotEmpty,
   IsOptional,
   IsString,
   MinLength,
-  Matches,
-  IsIn,
+  IsIn
 } from 'class-validator';
 import { IsNotBlank } from 'src/assets/validators/IsNoBlank.validator';
 
