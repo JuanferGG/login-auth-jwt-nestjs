@@ -29,7 +29,7 @@ async function bootstrap() {
 
   // TODO CORS
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: process.env.ORIGIN,
     credentials: true,
   });
 
