@@ -93,8 +93,8 @@ export class UserService {
     // TODO: Configurar la cookie con el token JWT
     res.cookie('jwt_token', token, {
       httpOnly: true,
-      secure: false, //* Cambiar a false en desarrollo local
-      sameSite: 'lax', //* Cambiar a 'lax' para pruebas locales
+      secure: true, //* Cambiar a false en desarrollo local
+      sameSite: 'none', //* Cambiar a 'lax' para pruebas locales
       maxAge: 3 * 60 * 60 * 1000,
     });
 
