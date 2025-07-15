@@ -1,9 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import { useDeteleUser } from "../../../hooks/useUsers";
-import { useUserStore } from "../../../hooks/useUserStore";
-import { NotyfComponent } from "../../UI/NotyfComponent";
 
-interface DeleteUserModalProps {
+interface ShowUserModalProps {
   IsOpenView: boolean;
   setOpenView: (value: boolean) => void;
   user: {
@@ -12,36 +9,16 @@ interface DeleteUserModalProps {
     lastName: string;
     email: string;
     role: string;
+    image: string;
     createdAt: string;
   } | null;
 }
 
-
-export default function DeleteUserModal({
+export default function ShowUserModal({
   IsOpenView,
   setOpenView,
   user,
-}: DeleteUserModalProps) {
-  const userStore = useUserStore().user
-  const { mutate: deleteUser } = useDeteleUser();
-
-  const handleDelete = () => {
-    if (user?.id === userStore?._id){
-      return NotyfComponent.error("No puedes eliminar tu cuenta")
-    }
-
-    deleteUser(user?.id || "", {
-      onSuccess: () => {
-        NotyfComponent.success("Usuario eliminado exitosamente");
-        setOpenView(false)
-      },
-      onError: (err) => {
-        console.log(err);
-        NotyfComponent.error("Algo ha salido mal");
-      },
-    });
-  };
-
+}: ShowUserModalProps) {
   return (
     <Dialog
       open={IsOpenView}
@@ -52,12 +29,21 @@ export default function DeleteUserModal({
       <div className="modalPosition">
         <div className="modalContainer">
           <DialogPanel className="dialogPanel p-6">
-            <h2 className="text-3xl font-bold mb-2">Eliminar Usuario</h2>
+            <h2 className="text-3xl font-bold mb-2">Usuario:</h2>
             <p className="text-lg mb-2">
-              ¿Estás seguro de que deseas eliminar este usuario?
+              Aqui puedes ver la informacion completa de un usuario
             </p>
             {user ? (
               <div className="space-y-2 mb-4 text-xl">
+                <img
+                  src={`${import.meta.env.VITE_BASE_API}${user.image}`}
+                  alt={`${user.firstName} ${user.lastName}`}
+                  className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+                />
+                <p>
+                  <strong>Fecha de Registro:</strong>{" "}
+                  {new Date(user.createdAt).toLocaleString()}
+                </p>
                 <p>
                   <strong>Nombre:</strong> {user.firstName}
                 </p>
@@ -79,13 +65,7 @@ export default function DeleteUserModal({
                 className="btn_primary"
                 onClick={() => setOpenView(false)}
               >
-                Cancelar
-              </button>
-              <button
-                className="cursor-pointer px-2 bg-red-500 font-semibold rounded-md h-[40px] text-white flex items-center"
-                onClick={() => handleDelete()}
-              >
-                Eliminar
+                Cerrar
               </button>
             </div>
           </DialogPanel>

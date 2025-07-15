@@ -1,22 +1,32 @@
+// TODO Libraries
 import { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import type { GridRowsProp, GridColDef } from "@mui/x-data-grid";
-import type { User } from "../../Api/users";
+
+// TODO Icon's
+import { BiPencil, BiSolidTrash, BiShowAlt } from "react-icons/bi";
+
+// TODO Components
 import EditUserModal from "../modals/Users/EditUser";
 import DeleteUserModal from "../modals/Users/DeleteUser";
 
+// TODO Types
+import type { GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import type { User } from "../../Api/users";
+import ShowUserModal from "../modals/Users/ShowUser";
 type UserRow = {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   role: string;
+  image: string;
   createdAt: string;
 };
 
 export default function DataTableUsers({ users }: { users: User[] }) {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenShowModal, setisOpenShowModal] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
 
   const rows: GridRowsProp = users.map((user) => ({
@@ -25,6 +35,7 @@ export default function DataTableUsers({ users }: { users: User[] }) {
     lastName: user.lastName,
     email: user.email,
     role: user.role,
+    image: user.image,
     createdAt: new Date(user.createdAt).toLocaleString(),
   }));
 
@@ -34,9 +45,14 @@ export default function DataTableUsers({ users }: { users: User[] }) {
   };
 
   const handleDelete = (user: UserRow) => {
-    setIsOpenDeleteModal(true)
-    setSelectedUser(user)
+    setIsOpenDeleteModal(true);
+    setSelectedUser(user);
   };
+
+  const handleShow = (user: UserRow) => {
+    setSelectedUser(user)
+    setisOpenShowModal(true)
+  }
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 220 },
@@ -54,16 +70,22 @@ export default function DataTableUsers({ users }: { users: User[] }) {
       renderCell: (params) => (
         <div className="flex items-center justify-center flex-wrap h-full gap-2 w-full">
           <button
+            className="cursor-pointer px-2 bg-blue-500 font-semibold rounded-md h-[40px] text-white flex items-center"
+            onClick={() => handleShow(params.row)}
+          >
+            <BiShowAlt className="text-2xl" />
+          </button>
+          <button
             className="cursor-pointer px-2 bg-green-500 font-semibold rounded-md h-[40px] text-white flex items-center"
             onClick={() => handleEdit(params.row)}
           >
-            Editar
+            <BiPencil className="text-2xl" />
           </button>
           <button
             className="cursor-pointer px-2 bg-red-500 font-semibold rounded-md h-[40px] text-white flex items-center"
             onClick={() => handleDelete(params.row)}
           >
-            Eliminar
+            <BiSolidTrash className="text-2xl" />
           </button>
         </div>
       ),
@@ -86,9 +108,14 @@ export default function DataTableUsers({ users }: { users: User[] }) {
         setOpenView={setIsOpenEditModal}
         user={selectedUser}
       />
-      <DeleteUserModal 
+      <DeleteUserModal
         IsOpenView={isOpenDeleteModal}
         setOpenView={setIsOpenDeleteModal}
+        user={selectedUser}
+      />
+      <ShowUserModal 
+        IsOpenView={isOpenShowModal}
+        setOpenView={setisOpenShowModal}
         user={selectedUser}
       />
     </>
