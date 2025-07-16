@@ -39,7 +39,7 @@ export default function EditUserModal({
     }
   }, [user]);
 
-  const { mutate: updateUser } = useUpdateUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -63,8 +63,8 @@ export default function EditUserModal({
     ) {
       NotyfComponent.open({
         type: "warning",
-        message: "No se han realizado cambios."
-      })
+        message: "No se han realizado cambios.",
+      });
       return;
     }
 
@@ -170,8 +170,9 @@ export default function EditUserModal({
                   <button
                     type="submit"
                     className="bg-[#697565] text-white font-semibold px-4 py-2 rounded cursor-pointer"
+                    disabled={isPending}
                   >
-                    Guardar Cambios
+                    {isPending ? "Guardando cambios..." : "Guardar Cambios"}
                   </button>
                 </div>
               </form>

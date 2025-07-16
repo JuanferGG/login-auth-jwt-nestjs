@@ -13,7 +13,7 @@ import { NotyfComponent } from "../components/UI/NotyfComponent";
 export default function RegisterPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
-  const { mutate } = useCreateUser();
+  const { mutate, isPending } = useCreateUser();
   const { isAuthenticated } = useUserStore();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -34,6 +34,7 @@ export default function RegisterPage() {
     if (formData.image) {
       dataUser.append("image", formData.image);
     }
+
 
     mutate(dataUser, {
       onSuccess: () => {
@@ -238,8 +239,9 @@ export default function RegisterPage() {
         <button
           type="submit"
           className="cursor-pointer w-full bg-[#2e3237] hover:bg-[#393E46] text-white font-semibold py-2 rounded transition-all duration-200"
+          disabled={isPending}
         >
-          Crear cuenta
+          {isPending ? "Creando cuenta..." : "Crear cuenta"}
         </button>
 
         <p className="mt-5 text-center">

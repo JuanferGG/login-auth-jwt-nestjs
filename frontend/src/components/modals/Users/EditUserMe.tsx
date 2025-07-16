@@ -55,7 +55,7 @@ export default function EditUserMe({
     }
   }, [user]);
 
-  const { mutate: updateUser } = useUpdateUserMe();
+  const { mutate: updateUser, isPending } = useUpdateUserMe();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -84,7 +84,7 @@ export default function EditUserMe({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Verificar si hay cambios en los datos
+    //! Verificar si hay cambios en los datos
     const hasChanges =
       formData.firstName !== user?.firstName ||
       formData.lastName !== user?.lastName ||
@@ -286,8 +286,9 @@ export default function EditUserMe({
                   <button
                     type="submit"
                     className="bg-[#697565] text-white font-semibold px-4 py-2 rounded cursor-pointer"
+                    disabled={isPending}
                   >
-                    Guardar Cambios
+                    {isPending ? "Guardando cambios..." : "Guardar Cambios"}
                   </button>
                 </div>
               </form>

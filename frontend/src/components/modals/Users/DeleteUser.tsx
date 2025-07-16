@@ -23,7 +23,7 @@ export default function DeleteUserModal({
   user,
 }: DeleteUserModalProps) {
   const userStore = useUserStore().user
-  const { mutate: deleteUser } = useDeteleUser();
+  const { mutate: deleteUser, isPending } = useDeteleUser();
 
   const handleDelete = () => {
     if (user?.id === userStore?._id){
@@ -84,8 +84,9 @@ export default function DeleteUserModal({
               <button
                 className="cursor-pointer px-2 bg-red-500 font-semibold rounded-md h-[40px] text-white flex items-center"
                 onClick={() => handleDelete()}
+                disabled={isPending}
               >
-                Eliminar
+                {isPending ? 'Eliminando' : 'Eliminar'}
               </button>
             </div>
           </DialogPanel>
