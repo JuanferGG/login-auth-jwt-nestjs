@@ -15,7 +15,7 @@ Este proyecto implementa un sistema de autenticación completo utilizando JWT (J
 
 ### Frontend (React + Vite)
 - **Interfaz Moderna**: Diseño responsive usando Tailwind CSS
-- **Gestión de Estado**: Manejo eficiente del estado de la aplicación
+- **Gestión de Estado**: Manejo eficiente del estado de la aplicación usando Zustand
 - **Formularios Interactivos**: Validación en tiempo real y feedback visual
 - **Vista Previa de Imágenes**: Funcionalidad para previsualizar imágenes antes de subirlas
 - **Notificaciones**: Sistema de notificaciones usando Notyf
@@ -37,6 +37,7 @@ Este proyecto implementa un sistema de autenticación completo utilizando JWT (J
   - React Router DOM
   - Notyf
   - Zustand
+  - React Query
 
 ## Estructura del Proyecto
 ```plaintext
@@ -49,6 +50,7 @@ Este proyecto implementa un sistema de autenticación completo utilizando JWT (J
 └── frontend/
     ├── src/
     │   ├── Api/
+    │   ├── assets/
     │   ├── components/
     │   ├── hooks/
     │   └── pages/
@@ -56,18 +58,43 @@ Este proyecto implementa un sistema de autenticación completo utilizando JWT (J
 ```
 
 ## Características de Seguridad
-- Encriptación de contraseñas
+- Encriptación de contraseñas con bcrypt
 - Validación de tokens JWT
 - Protección contra ataques CSRF
 - Validación de datos en frontend y backend
-- Manejo seguro de sesiones
+- Manejo seguro de sesiones con cookies HttpOnly
+- Protección de rutas basada en roles (admin/user)
 
 ## Funcionalidades de Usuario
 - Registro con imagen de perfil
-- Inicio de sesión
+- Inicio de sesión seguro
 - Visualización y edición de perfil
 - Cierre de sesión
-- Recuperación de contraseña
+- Panel de administración (solo admin)
+- Gestión de usuarios (solo admin)
+
+## Capturas de Pantalla
+
+### Área Administrativa
+
+#### Login del Sistema
+![Login del Sistema](screenshots/admin/img_01.png)
+
+#### Registro de Usuarios
+![Registro de Usuarios](screenshots/admin/img_06.png)
+
+#### Panel de Administración y Gestión de Usuarios
+![Panel de Administración 1](screenshots/admin/img_02.png)
+![Panel de Administración 2](screenshots/admin/img_03.png)
+![Panel de Administración 3](screenshots/admin/img_04.png)
+![Panel de Administración 4](screenshots/admin/img_05.png)
+
+### Área de Usuario
+
+#### Vista de Perfil Personalizada
+![Perfil de Usuario](screenshots/user/img_01.png)
+#### Vista de Perfil Editar Personalizada
+![Perfil de Usuario](screenshots/user/img_02.png)
 
 ## Mejores Prácticas Implementadas
 - Arquitectura limpia y modular
@@ -76,3 +103,6 @@ Este proyecto implementa un sistema de autenticación completo utilizando JWT (J
 - Validación de datos robusta
 - Código tipado con TypeScript
 - Documentación clara y mantenible
+- Optimización de peticiones al servidor
+- Gestión eficiente del estado global
+- Responsive Design
