@@ -12,6 +12,7 @@ interface EditUserModalProps {
     lastName: string;
     email: string;
     role: string;
+    password: string | null;
     createdAt: string;
   } | null;
 }
@@ -21,10 +22,17 @@ export default function EditUserModal({
   setOpenView,
   user,
 }: EditUserModalProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string | null;
+    role: string;
+  }>({
     firstName: "",
     lastName: "",
     email: "",
+    password: null,
     role: "user",
   });
 
@@ -34,6 +42,7 @@ export default function EditUserModal({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        password: user.password,
         role: user.role,
       });
     }
@@ -59,6 +68,7 @@ export default function EditUserModal({
       formData.firstName === user.firstName &&
       formData.lastName === user.lastName &&
       formData.email === user.email &&
+      formData.password === user.password &&
       formData.role === user.role
     ) {
       NotyfComponent.open({
@@ -72,6 +82,9 @@ export default function EditUserModal({
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);
     data.append("email", formData.email);
+    if (formData.password) {
+      data.append("password", formData.password);
+    }
     data.append("role", formData.role);
 
     updateUser(
@@ -143,6 +156,19 @@ export default function EditUserModal({
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded px-3 py-2"
                     required
+                  />
+                </div>
+                <div>
+                  <h5 className="text-left mb-2 font-semibold flex items-center gap-1">
+                    Contraseña:
+                  </h5>
+                  <input
+                    type="password"
+                    placeholder="Contraseña"
+                    className="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
                 </div>
                 <div>
