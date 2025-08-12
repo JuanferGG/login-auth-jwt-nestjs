@@ -20,6 +20,7 @@ type UserRow = {
   email: string;
   role: string;
   image: string;
+  password: string | null;
   createdAt: string;
 };
 
@@ -36,6 +37,7 @@ export default function DataTableUsers({ users }: { users: User[] }) {
     email: user.email,
     role: user.role,
     image: user.image,
+    password: null,
     createdAt: new Date(user.createdAt).toLocaleString(),
   }));
 
