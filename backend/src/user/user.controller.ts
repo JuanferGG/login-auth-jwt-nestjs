@@ -1,3 +1,4 @@
+// TODO Libraries
 import {
   Controller,
   Get,
@@ -11,19 +12,27 @@ import {
   BadRequestException,
   UseGuards,
   Res,
+  Request,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { UserService } from './user.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { multerConfig } from './config/multer.config';
-import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { unlink } from 'fs';
-import { LoginPipePipe } from './pipes/login-pipe.pipe';
-import { AuthGuard } from '../assets/guards/auth.guard';
+import { Response } from 'express';
+
+// TODO Service's
+import { UserService } from './user.service';
+
+// TODO Pipe's
+import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { ValidateUpdatePipe } from './pipes/Update.pipe';
-import { RolesGuard } from 'src/assets/guards/roles.guard';
-import { Roles } from 'src/assets/decorators/roles.decorator';
+import { LoginPipePipe } from './pipes/login-pipe.pipe';
 import { UpdateUserMe } from './pipes/UpdateUserMe.pipe';
+
+// TODO Guard's
+import { Roles } from 'src/assets/decorators/roles.decorator';
+import { AuthGuard } from '../assets/guards/auth.guard';
+import { RolesGuard } from 'src/assets/guards/roles.guard';
+
+import { multerConfig } from './config/multer.config';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -137,7 +146,7 @@ export class UserController {
   @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   @Roles('admin')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  remove(@Param('id') id: string, @Request() req: any) {
+    return this.userService.remove(id, req.user.id);
   }
 }

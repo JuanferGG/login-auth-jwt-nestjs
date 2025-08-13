@@ -225,9 +225,12 @@ export class UserService {
   }
 
   // TODO: Funcion para eliminar un usuario
-  async remove(id: string) {
+  async remove(id: string, userId: string) {
     if (!isValidObjectId(id)) {
       throw new HttpException('El id no es valido', 400);
+    }
+    if (userId == id) {
+      throw new HttpException('No puedes eliminar tu propio perfil', 403);
     }
 
     const userFound = await this.UserModel.findById(id);
@@ -240,6 +243,6 @@ export class UserService {
 
     await this.UserModel.findByIdAndDelete(id);
 
-    return { message: 'Usuario eliminada exitosamente' };
+    return { message: 'Usuario eliminado exitosamente' };
   }
 }
