@@ -30,3 +30,7 @@
 .btn_primary {
     @apply cursor-pointer w-fit px-2 bg-[#2e3237] hover:bg-[#393E46] text-white font-semibold py-2 rounded transition-all duration-200;
 }
+
+.btn_forms {
+    @apply cursor-pointer w-full bg-[#FE5D26] hover:bg-[#FE5D49] text-white font-semibold py-2 rounded transition-all duration-200;
+}

@@ -3,9 +3,8 @@ import "notyf/notyf.min.css";
 import "./App.css";
 
 // TODO Pages
-import LoginPage from "./pages/LoginPage";
+import Login_RegisterPage from "./pages/Login_RegisterPage";
 import HomePage from "./pages/HomePage";
-import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 
 // TODO Admin Page's
@@ -34,8 +33,14 @@ function App() {
     <Routes>
       {/** //* Public Pages */}
       <Route element={<LayoutPublicPages />}>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/login"
+          element={<Login_RegisterPage defaultTab="login" />}
+        />
+        <Route
+          path="/register"
+          element={<Login_RegisterPage defaultTab="register" />}
+        />
       </Route>
 
       {/* //* Protected Routes role User isAuthenticated */}
