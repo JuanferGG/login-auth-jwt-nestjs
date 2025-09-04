@@ -29,8 +29,14 @@ export default function LoginForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleLogin({ email, password })
-      .then(() => {
+      .then((e) => {
         NotyfComponent.success("Inicio de sesión exitoso");
+        const role = e.data.user.role
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
       })
       .catch((error) => {
         const errors = error.response.data.message;

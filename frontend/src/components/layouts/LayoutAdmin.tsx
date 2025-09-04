@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../hooks/useUserStore";
-import HeaderComponent from "../Header/HeaderComponent";
+import AdminHeader from "../Header/AdminHeader";
 
 export default function LayoutAdmin() {
   const navigate = useNavigate();
@@ -28,9 +28,9 @@ export default function LayoutAdmin() {
   }
 
   return (
-    <section className="bg-[#DFD0B8] min-h-screen w-full">
-      <HeaderComponent />
-      <section className="pt-16 w-screen ">
+    <section className="bg-[#DFD0B8] min-h-screen w-full flex">
+      <AdminHeader />
+      <section className="flex ml-20 transition-all duration-300 pl-0 sm:pl-6">
         <Outlet />
       </section>
     </section>

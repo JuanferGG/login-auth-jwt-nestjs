@@ -12,17 +12,7 @@ import { IoClose } from "react-icons/io5";
 import logoVite from "../../assets/react.svg";
 
 // TODO Rutas por rol
-const menuRoutes = {
-  admin: [
-    { path: "/admin/dashboard", label: "Dashboard" },
-    { path: "/admin/users", label: "Users" },
-    { path: "/profile", label: "Perfil" },
-  ],
-  user: [
-    { path: "/", label: "Inicio" },
-    { path: "/profile", label: "Perfil" },
-  ],
-};
+import { menuRoutes } from "./Routes";
 
 export default function HeaderComponent() {
   const { user } = useUserStore();

@@ -96,7 +96,7 @@ export default function DataTableUsers({ users }: { users: User[] }) {
 
   return (
     <>
-      <div style={{ height: 500, width: "100%" }}>
+      <div className="w-full h-[500px]">
         <DataGrid
           rows={rows}
           columns={columns}
