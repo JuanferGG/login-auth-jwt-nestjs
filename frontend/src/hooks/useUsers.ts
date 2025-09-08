@@ -6,6 +6,10 @@ export const useGetUsers = () => {
   return useQuery({
     queryKey: ["users"],
     queryFn: getUsers,
+    refetchOnWindowFocus: false, //? 🔴 evita que se haga al volver a la pestaña
+    refetchOnReconnect: true, //? 🔴 evita recargar la data al reconectar
+    retry: false, //? 🔴 evita el reintento en caso de error
+    staleTime: 1000 * 60 * 5, //? ✅ 5 minutos "frescos"
   });
 };
 

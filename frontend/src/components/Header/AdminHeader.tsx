@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { useUserStore } from "../../hooks/useUserStore";
-
 // TODO Components
 import { Link } from "react-router-dom";
 import { menuRoutes } from "./Routes";
+import { NotyfComponent } from "../UI/NotyfComponent";
+//TODO HOOK's
+import { useUserStore } from "../../hooks/useUserStore";
+import { useState } from "react";
+import { useLogout } from "../../hooks/useAuth";
 // TODO Icon's
 import logoVite from "../../assets/react.svg";
-import { BiChevronLeft } from "react-icons/bi";
+import { BiChevronLeft, BiLogOutCircle } from "react-icons/bi";
 
 // TODO Rutas admin
 const adminRoutes = menuRoutes.admin;
@@ -14,6 +16,17 @@ const adminRoutes = menuRoutes.admin;
 export default function AdminHeader() {
   const { user } = useUserStore();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const { handleLogout } = useLogout();
+
+  const handleLogoutClick = async () => {
+    await handleLogout()
+      .then(() => {
+        NotyfComponent.success("Sesion Terminada");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -77,7 +90,8 @@ export default function AdminHeader() {
         </div>
 
         {/* //! Navegación */}
-        <nav className="flex-1 p-4">
+        {/* //! Navegación con scroll */}
+        <nav className="flex-1 p-4 overflow-y-auto">
           <span
             className={`text-sm font-medium text-gray-500 uppercase transition-opacity duration-300 ${
               isCollapsed ? "opacity-0 hidden" : "opacity-100"
@@ -86,19 +100,19 @@ export default function AdminHeader() {
             Menu
           </span>
           <div className="mt-3 flex flex-col gap-1">
-            {adminRoutes.map(({ path, label }) => (
+            {adminRoutes.map(({ path, label, icon }) => (
               <Link
                 key={path}
                 to={path}
                 className={`flex items-center ${
                   isCollapsed ? "justify-center" : "gap-3"
-                } px-3 py-2 rounded-lg text-gray-700 font-medium 
+                } py-2 rounded-lg text-gray-700 font-medium 
                 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group relative`}
               >
                 {/* //! Indicador lateral en hover */}
                 <span
                   className="absolute left-0 top-0 h-full w-1 bg-blue-500 rounded-r opacity-0 
-                group-hover:opacity-100 transition-all duration-200"
+                  group-hover:opacity-100 transition-all duration-200"
                 ></span>
 
                 {/* //! Circulito inicial */}
@@ -106,7 +120,7 @@ export default function AdminHeader() {
                   className="w-8 h-8 flex items-center justify-center bg-blue-100 
                 text-blue-600 font-bold rounded-full text-sm"
                 >
-                  {label.charAt(0)}
+                  {icon}
                 </span>
 
                 {/* //! Texto */}
@@ -124,16 +138,16 @@ export default function AdminHeader() {
           </div>
         </nav>
 
-        {/* //! Footer */}
-        <footer
-          className={`p-4 border-t border-gray-200 transition-opacity duration-300 ${
-            isCollapsed ? "opacity-0" : "opacity-100"
-          }`}
+        {/* //! Logout fijo abajo */}
+        <button
+          onClick={handleLogoutClick}
+          className="cursor-pointer absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 
+          px-4 py-2 w-[85%] rounded-lg bg-red-50 text-red-600 font-medium 
+        hover:bg-red-100 hover:text-red-700 transition-all duration-200"
         >
-          <p className="text-sm text-gray-500 text-center">
-            © {new Date().getFullYear()} Admin Dashboard
-          </p>
-        </footer>
+          <BiLogOutCircle className="text-xl" />
+          {!isCollapsed && <span>Cerrar Sesión</span>}
+        </button>
       </aside>
     </>
   );
