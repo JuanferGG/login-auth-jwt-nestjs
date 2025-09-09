@@ -12,7 +12,7 @@ export const menuRoutes = {
       icon: <BiSolidDashboard />,
     },
     { path: "/admin/users", label: "Users", icon: <BiSolidUserDetail /> },
-    { path: "/profile", label: "Perfil", icon: <BiSolidWasher /> },
+    { path: "/admin/profile", label: "Perfil", icon: <BiSolidWasher /> },
   ],
   user: [
     { path: "/", label: "Inicio" },

@@ -109,16 +109,11 @@ export default function AdminHeader() {
                 } py-2 rounded-lg text-gray-700 font-medium 
                 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group relative`}
               >
-                {/* //! Indicador lateral en hover */}
-                <span
-                  className="absolute left-0 top-0 h-full w-1 bg-blue-500 rounded-r opacity-0 
-                  group-hover:opacity-100 transition-all duration-200"
-                ></span>
 
                 {/* //! Circulito inicial */}
                 <span
                   className="w-8 h-8 flex items-center justify-center bg-blue-100 
-                text-blue-600 font-bold rounded-full text-sm"
+                text-blue-600 font-bold rounded-full text-xl"
                 >
                   {icon}
                 </span>
