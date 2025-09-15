@@ -117,11 +117,6 @@ export class UserService {
     return this.UserModel.find().exec();
   }
 
-  // TODO: Funcion para traer un usuario por su id
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
   // TODO: Funcion para actualizar todo el usuario
   async update(
     id: string,

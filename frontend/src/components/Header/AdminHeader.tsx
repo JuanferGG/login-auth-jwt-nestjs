@@ -12,6 +12,7 @@ import { BiChevronLeft, BiLogOutCircle } from "react-icons/bi";
 
 // TODO Rutas admin
 const adminRoutes = menuRoutes.admin;
+const userRoutes = menuRoutes.user;
 
 export default function AdminHeader() {
   const { user } = useUserStore();
@@ -109,7 +110,6 @@ export default function AdminHeader() {
                 } py-2 rounded-lg text-gray-700 font-medium 
                 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group relative`}
               >
-
                 {/* //! Circulito inicial */}
                 <span
                   className="w-8 h-8 flex items-center justify-center bg-blue-100 
@@ -119,6 +119,39 @@ export default function AdminHeader() {
                 </span>
 
                 {/* //! Texto */}
+                <span
+                  className={`truncate transition-opacity duration-300 ${
+                    isCollapsed
+                      ? "opacity-0 w-0 overflow-hidden"
+                      : "opacity-100"
+                  }`}
+                >
+                  {label}
+                </span>
+              </Link>
+            ))}
+          </div>
+          {/* Sección User */}
+          <span
+            className={`mt-6 text-sm font-medium text-gray-500 uppercase transition-opacity duration-300 ${
+              isCollapsed ? "opacity-0 hidden" : "opacity-100"
+            }`}
+          >
+            Funciones de Usuario
+          </span>
+          <div className="mt-3 flex flex-col gap-1">
+            {userRoutes.map(({ path, label, icon }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`flex items-center ${
+                  isCollapsed ? "justify-center" : "gap-3"
+                } py-2 rounded-lg text-gray-700 font-medium 
+                  hover:bg-green-50 hover:text-green-600 transition-all duration-200 group relative`}
+              >
+                <span className="w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-xl">
+                  {icon ?? label.charAt(0)}
+                </span>
                 <span
                   className={`truncate transition-opacity duration-300 ${
                     isCollapsed
