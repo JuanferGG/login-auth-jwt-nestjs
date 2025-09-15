@@ -140,7 +140,7 @@ export default function AdminHeader() {
             Funciones de Usuario
           </span>
           <div className="mt-3 flex flex-col gap-1">
-            {userRoutes.map(({ path, label, icon }) => (
+            {userRoutes.map(({ path, label }) => (
               <Link
                 key={path}
                 to={path}
@@ -150,7 +150,7 @@ export default function AdminHeader() {
                   hover:bg-green-50 hover:text-green-600 transition-all duration-200 group relative`}
               >
                 <span className="w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-xl">
-                  {icon ?? label.charAt(0)}
+                  {label.charAt(0)}
                 </span>
                 <span
                   className={`truncate transition-opacity duration-300 ${
