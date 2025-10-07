@@ -1,45 +1,50 @@
-// TODO Components
-import { Link } from "react-router-dom";
-import { menuRoutes } from "./Routes";
-import { NotyfComponent } from "../UI/NotyfComponent";
-//TODO HOOK's
-import { useUserStore } from "../../hooks/useUserStore";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useUserStore } from "../../hooks/useUserStore";
 import { useLogout } from "../../hooks/useAuth";
-// TODO Icon's
-import logoVite from "../../assets/react.svg";
-import { BiChevronLeft, BiLogOutCircle } from "react-icons/bi";
+import { NotyfComponent } from "../UI/NotyfComponent";
+import { menuRoutes } from "./Routes";
 
-// TODO Rutas admin
+//! ICONOS
+import logoVite from "../../assets/react.svg";
+import {
+  BiChevronLeft,
+  BiLogOutCircle,
+  BiChevronDown,
+  BiUserCircle,
+} from "react-icons/bi";
+
 const adminRoutes = menuRoutes.admin;
 const userRoutes = menuRoutes.user;
 
 export default function AdminHeader() {
   const { user } = useUserStore();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { handleLogout } = useLogout();
 
   const handleLogoutClick = async () => {
-    await handleLogout()
-      .then(() => {
-        NotyfComponent.success("Sesion Terminada");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      await handleLogout();
+      NotyfComponent.success("Sesión Terminada");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <>
-      {/* //! Overlay */}
+      {/* //! Overlay cuando el menú está abierto */}
       {!isCollapsed && (
         <div
           onClick={() => setIsCollapsed(true)}
           className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300"
         />
       )}
+
       <aside
-        className={`fixed top-0 left-0 h-full bg-white shadow-lg z-50 ${
+        className={`fixed top-0 left-0 h-full bg-white shadow-lg z-50 
+        ${
           isCollapsed ? "w-16" : "w-64"
         } flex flex-col transition-all duration-300`}
       >
@@ -47,12 +52,13 @@ export default function AdminHeader() {
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className={`cursor-pointer z-50 absolute -right-3 top-6 bg-white rounded-full p-1.5
-        shadow-md hover:bg-gray-50 transition-transform duration-300 ${
-          isCollapsed ? "rotate-180" : ""
-        }`}
+            shadow-md hover:bg-gray-50 transition-transform duration-300 ${
+              isCollapsed ? "rotate-180" : ""
+            }`}
         >
           <BiChevronLeft className="text-gray-600 text-xl" />
         </button>
+
         {/* //! Logo y título */}
         <div className="flex items-center gap-2 p-4 border-b border-gray-200">
           <Link to={"/"}>
@@ -90,9 +96,9 @@ export default function AdminHeader() {
           </div>
         </div>
 
-        {/* //! Navegación */}
-        {/* //! Navegación con scroll */}
+        {/* //! Navegación principal */}
         <nav className="flex-1 p-4 overflow-y-auto">
+          {/* //! ADMIN */}
           <span
             className={`text-sm font-medium text-gray-500 uppercase transition-opacity duration-300 ${
               isCollapsed ? "opacity-0 hidden" : "opacity-100"
@@ -108,17 +114,11 @@ export default function AdminHeader() {
                 className={`flex items-center ${
                   isCollapsed ? "justify-center" : "gap-3"
                 } py-2 rounded-lg text-gray-700 font-medium 
-                hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group relative`}
+                  hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group relative`}
               >
-                {/* //! Circulito inicial */}
-                <span
-                  className="w-8 h-8 flex items-center justify-center bg-blue-100 
-                text-blue-600 font-bold rounded-full text-xl"
-                >
+                <span className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full text-xl">
                   {icon}
                 </span>
-
-                {/* //! Texto */}
                 <span
                   className={`truncate transition-opacity duration-300 ${
                     isCollapsed
@@ -131,42 +131,61 @@ export default function AdminHeader() {
               </Link>
             ))}
           </div>
-          {/* Sección User */}
-          <span
-            className={`mt-6 text-sm font-medium text-gray-500 uppercase transition-opacity duration-300 ${
-              isCollapsed ? "opacity-0 hidden" : "opacity-100"
-            }`}
-          >
-            Funciones de Usuario
-          </span>
-          <div className="mt-3 flex flex-col gap-1">
-            {userRoutes.map(({ path, label }) => (
-              <Link
-                key={path}
-                to={path}
+
+          {/* //! SUBMENÚ USUARIO (drawer interno) */}
+          <div className="mt-6">
+            <button
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className={`cursor-pointer flex items-center justify-between w-full px-2 py-2 rounded-lg text-gray-700 font-medium
+                hover:bg-green-50 hover:text-green-600 transition-all duration-200 ${
+                  isCollapsed ? "justify-center" : ""
+                }`}
+            >
+              <div
                 className={`flex items-center ${
                   isCollapsed ? "justify-center" : "gap-3"
-                } py-2 rounded-lg text-gray-700 font-medium 
-                  hover:bg-green-50 hover:text-green-600 transition-all duration-200 group relative`}
+                }`}
               >
-                <span className="w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-xl">
-                  {label.charAt(0)}
+                <span className="cursor-pointer w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-xl">
+                  <BiUserCircle />
                 </span>
-                <span
-                  className={`truncate transition-opacity duration-300 ${
-                    isCollapsed
-                      ? "opacity-0 w-0 overflow-hidden"
-                      : "opacity-100"
+                {!isCollapsed && <span>Func. Usuario</span>}
+              </div>
+
+              {!isCollapsed && (
+                <BiChevronDown
+                  className={`text-xl transition-transform duration-300 ${
+                    isUserMenuOpen ? "rotate-180" : ""
                   }`}
+                />
+              )}
+            </button>
+
+            {/* //! Drawer interno de rutas de usuario */}
+            <div
+              className={`flex flex-col gap-1 pl-4 mt-2 overflow-hidden transition-all duration-300 ${
+                isUserMenuOpen && !isCollapsed
+                  ? "max-h-40 opacity-100"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
+              {userRoutes.map(({ path, label, icon }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className="flex items-center gap-3 py-2 rounded-lg text-gray-700 font-medium hover:bg-green-50 hover:text-green-600 transition-all duration-200"
                 >
-                  {label}
-                </span>
-              </Link>
-            ))}
+                  <span className="w-6 h-6 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-sm">
+                    {icon}
+                  </span>
+                  <span className="truncate">{label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </nav>
 
-        {/* //! Logout fijo abajo */}
+        {/* //! Logout */}
         <button
           onClick={handleLogoutClick}
           className="cursor-pointer absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 
