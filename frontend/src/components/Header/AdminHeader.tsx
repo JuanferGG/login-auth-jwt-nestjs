@@ -4,23 +4,20 @@ import { useUserStore } from "../../hooks/useUserStore";
 import { useLogout } from "../../hooks/useAuth";
 import { NotyfComponent } from "../UI/NotyfComponent";
 import { menuRoutes } from "./Routes";
+import SubMenuRoutes from "./SubMenuRoutes";
 
 //! ICONOS
 import logoVite from "../../assets/react.svg";
-import {
-  BiChevronLeft,
-  BiLogOutCircle,
-  BiChevronDown,
-  BiUserCircle,
-} from "react-icons/bi";
+import { BiChevronLeft, BiLogOutCircle } from "react-icons/bi";
 
 const adminRoutes = menuRoutes.admin;
 const userRoutes = menuRoutes.user;
+const chefRoutes = menuRoutes.chef;
 
 export default function AdminHeader() {
   const { user } = useUserStore();
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
   const { handleLogout } = useLogout();
 
   const handleLogoutClick = async () => {
@@ -132,57 +129,14 @@ export default function AdminHeader() {
             ))}
           </div>
 
-          {/* //! SUBMENÚ USUARIO (drawer interno) */}
-          <div className="mt-6">
-            <button
-              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className={`cursor-pointer flex items-center justify-between w-full px-2 py-2 rounded-lg text-gray-700 font-medium
-                hover:bg-green-50 hover:text-green-600 transition-all duration-200 ${
-                  isCollapsed ? "justify-center" : ""
-                }`}
-            >
-              <div
-                className={`flex items-center ${
-                  isCollapsed ? "justify-center" : "gap-3"
-                }`}
-              >
-                <span className="cursor-pointer w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-xl">
-                  <BiUserCircle />
-                </span>
-                {!isCollapsed && <span>Func. Usuario</span>}
-              </div>
-
-              {!isCollapsed && (
-                <BiChevronDown
-                  className={`text-xl transition-transform duration-300 ${
-                    isUserMenuOpen ? "rotate-180" : ""
-                  }`}
-                />
-              )}
-            </button>
-
-            {/* //! Drawer interno de rutas de usuario */}
-            <div
-              className={`flex flex-col gap-1 pl-4 mt-2 overflow-hidden transition-all duration-300 ${
-                isUserMenuOpen && !isCollapsed
-                  ? "max-h-40 opacity-100"
-                  : "max-h-0 opacity-0"
-              }`}
-            >
-              {userRoutes.map(({ path, label, icon }) => (
-                <Link
-                  key={path}
-                  to={path}
-                  className="flex items-center gap-3 py-2 rounded-lg text-gray-700 font-medium hover:bg-green-50 hover:text-green-600 transition-all duration-200"
-                >
-                  <span className="w-6 h-6 flex items-center justify-center bg-green-100 text-green-600 rounded-full text-sm">
-                    {icon}
-                  </span>
-                  <span className="truncate">{label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* //! SUBMENÚ USUARIO */}
+          <SubMenuRoutes
+            routes={userRoutes}
+            title="Func. Usuario"
+            isCollapsed={isCollapsed}
+            bgColor="green"
+            textColor="green"
+          />
         </nav>
 
         {/* //! Logout */}
