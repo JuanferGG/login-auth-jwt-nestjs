@@ -12,7 +12,6 @@ import { BiChevronLeft, BiLogOutCircle } from "react-icons/bi";
 
 const adminRoutes = menuRoutes.admin;
 const userRoutes = menuRoutes.user;
-const chefRoutes = menuRoutes.chef;
 
 export default function AdminHeader() {
   const { user } = useUserStore();

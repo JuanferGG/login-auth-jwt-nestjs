@@ -5,13 +5,13 @@ import { BiChevronDown, BiUserCircle } from "react-icons/bi";
 interface Route {
   path: string;
   label: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
 }
 
 interface SubMenuRoutesProps {
   routes: Route[];
   title: string;
-  icon?: JSX.Element;
+  icon?: React.ReactNode;
   bgColor?: string;
   textColor?: string;
   isCollapsed: boolean;
