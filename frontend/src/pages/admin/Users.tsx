@@ -8,7 +8,7 @@ import { BiSolidUserAccount } from "react-icons/bi";
 import { useGetUsers } from "../../hooks/useUsers";
 
 function Users() {
-  const { data: usersData, isLoading, isError, error } = useGetUsers();
+  const { data: usersData, isLoading, isError, error, refetch } = useGetUsers();
 
   const users = usersData?.data ?? [];
 
@@ -40,7 +40,7 @@ function Users() {
         Estos son todos los usuarios del sistema puedes editar, eliminar y ver sus datos.
       </p>
       <div className="w-full pr-16">
-        <DataTableUsers users={users} />
+        <DataTableUsers users={users} refetchUsersData={refetch} />
       </div>
     </div>
   );

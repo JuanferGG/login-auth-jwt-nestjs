@@ -9,6 +9,7 @@ import {
   BiShowAlt,
   BiSearch,
   BiPlus,
+  BiRefresh,
 } from "react-icons/bi";
 
 // TODO Components
@@ -31,7 +32,13 @@ type UserRow = {
   createdAt: string;
 };
 
-export default function DataTableUsers({ users }: { users: User[] }) {
+export default function DataTableUsers({
+  users,
+  refetchUsersData,
+}: {
+  users: User[];
+  refetchUsersData: () => void;
+}) {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenShowModal, setisOpenShowModal] = useState(false);
@@ -167,9 +174,20 @@ export default function DataTableUsers({ users }: { users: User[] }) {
         </div>
 
         {/* Botón de agregar */}
-        <button className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-5 py-3 rounded-lg shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-200 whitespace-nowrap">
+        <button
+          className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r 
+        from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold
+        px-5 py-3 rounded-lg shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-200 whitespace-nowrap"
+        >
           <BiPlus className="text-2xl" />
           <span>Nuevo Usuario</span>
+        </button>
+        <button
+          className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-600 
+      hover:from-green-600 hover:to-green-700 text-white font-semibold px-2 py-3 rounded-lg 
+        shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-200 whitespace-nowrap"
+        >
+          <BiRefresh onClick={refetchUsersData} className="text-2xl" />
         </button>
       </div>
 
