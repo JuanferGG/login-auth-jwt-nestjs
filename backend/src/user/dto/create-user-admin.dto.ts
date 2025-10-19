@@ -1,13 +1,12 @@
 import {
   IsEmail,
-  IsOptional,
   IsString,
   MinLength,
   IsIn
 } from 'class-validator';
 import { IsNotBlank } from 'src/assets/validators/IsNoBlank.validator';
 
-export class CreateUserDto {
+export class CreateUserAdminDto {
   @IsString()
   @MinLength(3)
   @IsNotBlank({ message: 'El nombre no puede estar vacío' })
@@ -28,6 +27,6 @@ export class CreateUserDto {
   password: string;
 
   @IsString()
-  @IsOptional()
-  image?: Express.Multer.File | String;
+  @IsIn(['admin', 'user'], { message: 'El rol debe ser "admin" o "user"' })
+  role?: 'admin' | 'user' = 'user';
 }

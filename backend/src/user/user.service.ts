@@ -11,6 +11,7 @@ import { join } from 'path';
 import { compare, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { CreateUserAdminDto } from './dto/create-user-admin.dto';
 
 @Injectable()
 export class UserService {
@@ -64,6 +65,33 @@ export class UserService {
     return {
       message: 'User created successfully',
       user: user,
+    };
+  }
+
+  // TODO: Funcion para crear un usuario por el admin
+  async createByAdmin(createByAdmin: CreateUserAdminDto) {
+    const userExist = await this.UserModel.findOne({
+      email: createByAdmin.email,
+    });
+    if (userExist) {
+      throw new HttpException('El Email ya esta en uso', 401);
+    }
+
+    const { password } = createByAdmin;
+    const saltOrRounds = 10;
+    const plainToHash = await hash(password, saltOrRounds);
+
+    const userCreate = new this.UserModel({
+      ...createByAdmin,
+      password: plainToHash,
+      image: '/uploads/Users/UserDefault.png',
+    });
+
+    const userSave = await userCreate.save();
+
+    return {
+      message: 'User created successfully',
+      user: userSave,
     };
   }
 

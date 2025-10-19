@@ -25,6 +25,8 @@ import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { ValidateUpdatePipe } from './pipes/Update.pipe';
 import { LoginPipePipe } from './pipes/login-pipe.pipe';
 import { UpdateUserMe } from './pipes/UpdateUserMe.pipe';
+import { DtoValidationPipe } from './pipes/ValidationPipe.pipe';
+import { CreateUserAdminDto } from './dto/create-user-admin.dto';
 
 // TODO Guard's
 import { Roles } from 'src/assets/decorators/roles.decorator';
@@ -38,7 +40,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // ! Registro de usuario
+  // ! Registro de usuario sin rol
   @Post('/RegisterUser')
   @UseInterceptors(FileInterceptor('image', multerConfig))
   create(
@@ -59,6 +61,15 @@ export class UserController {
     }
     // TODO: Continuar si todo está bien ✅
     return this.userService.create(body.value, image);
+  }
+
+  // ! Registro de un usuario por el admin, teniendo la capacidad de crear mas admin's o cualquier rol
+  @Post('/RegisterUserAdmin')
+  createByAdmin(
+    @Body(new DtoValidationPipe(CreateUserAdminDto))
+    createByAdmin: CreateUserAdminDto,
+  ) {
+    return this.userService.createByAdmin(createByAdmin)
   }
 
   // ! Login de usuario
