@@ -16,6 +16,7 @@ import {
 import EditUserModal from "../modals/Users/EditUser";
 import DeleteUserModal from "../modals/Users/DeleteUser";
 import ShowUserModal from "../modals/Users/ShowUser";
+import CreateUserAdmin from "../modals/Users/CreateUserAdmin";
 
 // TODO Types
 import type { GridRowsProp, GridColDef } from "@mui/x-data-grid";
@@ -42,6 +43,7 @@ export default function DataTableUsers({
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenShowModal, setisOpenShowModal] = useState(false);
+  const [isOpenCreateAdminModal, setIsOpenCreateAdminModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -180,7 +182,7 @@ export default function DataTableUsers({
         px-5 py-3 rounded-lg shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-200 whitespace-nowrap"
         >
           <BiPlus className="text-2xl" />
-          <span>Nuevo Usuario</span>
+          <span onClick={() => setIsOpenCreateAdminModal(true)}>Nuevo Usuario</span>
         </button>
         <button
           className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-600 
@@ -266,6 +268,10 @@ export default function DataTableUsers({
         IsOpenView={isOpenShowModal}
         setOpenView={setisOpenShowModal}
         user={selectedUser}
+      />
+      <CreateUserAdmin
+        IsOpenView={isOpenCreateAdminModal}
+        setOpenView={setIsOpenCreateAdminModal}
       />
     </>
   );
