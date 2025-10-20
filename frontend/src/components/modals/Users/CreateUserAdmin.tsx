@@ -1,6 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCreateUserByAdmin } from "../../../hooks/useUsers";
+import type { AxiosError } from "axios";
 import * as Yup from "yup";
 
 import { NotyfComponent } from "../../UI/NotyfComponent";
@@ -46,8 +47,10 @@ export default function CreateUserAdmin({
         setOpenView(false);
       },
       onError: (err) => {
-        const messageError = err.response?.data?.message || "Error desconocido";
-        NotyfComponent.error(messageError)
+        const axiosError = err as AxiosError<{ message?: string }>;
+        const messageError =
+          axiosError.response?.data?.message || "Algo ha salido mal";
+        NotyfComponent.error(messageError);
       },
     });
   };
