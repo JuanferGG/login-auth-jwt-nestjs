@@ -42,7 +42,7 @@ export default function ShowUserModal({
                 />
                 <p>
                   <strong>Fecha de Registro:</strong>{" "}
-                  {new Date(user.createdAt).toLocaleString()}
+                  {user.createdAt}
                 </p>
                 <p>
                   <strong>Nombre:</strong> {user.firstName}

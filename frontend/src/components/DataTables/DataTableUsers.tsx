@@ -177,12 +177,13 @@ export default function DataTableUsers({
 
         {/* Botón de agregar */}
         <button
+          onClick={() => setIsOpenCreateAdminModal(true)}
           className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r 
         from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold
         px-5 py-3 rounded-lg shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-200 whitespace-nowrap"
         >
           <BiPlus className="text-2xl" />
-          <span onClick={() => setIsOpenCreateAdminModal(true)}>Nuevo Usuario</span>
+          <span>Nuevo Usuario</span>
         </button>
         <button
           className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-600 

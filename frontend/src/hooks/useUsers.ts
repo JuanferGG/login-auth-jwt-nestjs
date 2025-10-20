@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, updateUser, updateUserMe } from "../Api/users";
+import { createUserByAdmin, deleteUser, getUsers, updateUser, updateUserMe } from "../Api/users";
 
 export const useGetUsers = () => {
   return useQuery({
@@ -12,6 +12,20 @@ export const useGetUsers = () => {
     staleTime: 1000 * 60 * 5, //? ✅ 5 minutos "frescos"
   });
 };
+
+export const useCreateUserByAdmin = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createUserByAdmin,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] })
+    },
+    onError: (err) => {
+      throw err
+    }
+  })
+}
 
 export const useDeteleUser = () => {
   const queryClient = useQueryClient();

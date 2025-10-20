@@ -13,6 +13,14 @@ export interface User {
     __v: number;
   }
 
+export interface UserRegisterAdmin {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: string
+}
+
 export const getUsers = async () => {
     return await axios
       .get('/user/getUsers')
@@ -22,6 +30,17 @@ export const getUsers = async () => {
       .catch((err) => {
         throw err
       })
+}
+
+export const createUserByAdmin = async (userRegister: UserRegisterAdmin) => {
+  return await axios
+    .post('/user/RegisterUserAdmin', userRegister)
+    .then((res) => {
+      return res
+    })
+    .catch((err) => {
+      throw err
+    })
 }
 
 export const deleteUser = async ( id: string ) => {

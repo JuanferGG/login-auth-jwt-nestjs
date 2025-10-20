@@ -65,6 +65,8 @@ export class UserController {
 
   // ! Registro de un usuario por el admin, teniendo la capacidad de crear mas admin's o cualquier rol
   @Post('/RegisterUserAdmin')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('admin')
   createByAdmin(
     @Body(new DtoValidationPipe(CreateUserAdminDto))
     createByAdmin: CreateUserAdminDto,
