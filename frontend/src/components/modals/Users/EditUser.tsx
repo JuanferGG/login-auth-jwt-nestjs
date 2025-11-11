@@ -114,7 +114,7 @@ export default function EditUserModal({
       onClose={() => setOpenView(false)}
       className="relative z-100"
     >
-      <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
+      <DialogBackdrop className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
       <div className="modalPosition">
         <div className="modalContainer">
           <DialogPanel className="dialogPanel p-6">
@@ -195,7 +195,9 @@ export default function EditUserModal({
                   </button>
                   <button
                     type="submit"
-                    className="bg-[#697565] text-white font-semibold px-4 py-2 rounded cursor-pointer"
+                    className={`bg-[#697565] text-white font-semibold px-4 py-2 rounded cursor-pointer ${
+                      isPending ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                     disabled={isPending}
                   >
                     {isPending ? "Guardando cambios..." : "Guardar Cambios"}

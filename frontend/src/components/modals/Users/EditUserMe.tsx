@@ -285,7 +285,9 @@ export default function EditUserMe({
                   </button>
                   <button
                     type="submit"
-                    className="bg-[#697565] text-white font-semibold px-4 py-2 rounded cursor-pointer"
+                    className={`bg-[#697565] text-white font-semibold px-4 py-2 rounded cursor-pointer ${
+                      isPending ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                     disabled={isPending}
                   >
                     {isPending ? "Guardando cambios..." : "Guardar Cambios"}

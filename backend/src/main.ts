@@ -14,6 +14,9 @@ async function bootstrap() {
   // TODO Static folder para uploads
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads',
+    setHeaders: (res) => {
+      res.set('Cache-Control', 'public, max-age=31536000'); // 1 año
+    },
   });
 
   // TODO Validaciones globales
