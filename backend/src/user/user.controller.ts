@@ -11,11 +11,9 @@ import {
   UploadedFile,
   BadRequestException,
   UseGuards,
-  Res,
   Request,
 } from '@nestjs/common';
 import { unlink } from 'fs';
-import { Response } from 'express';
 
 // TODO Service's
 import { UserService } from './user.service';
@@ -23,7 +21,6 @@ import { UserService } from './user.service';
 // TODO Pipe's
 import { ValidateUserDtoPipe } from './pipes/ValidateUserDto.pipe';
 import { ValidateUpdatePipe } from './pipes/Update.pipe';
-import { LoginPipePipe } from './pipes/login-pipe.pipe';
 import { UpdateUserMe } from './pipes/UpdateUserMe.pipe';
 import { DtoValidationPipe } from './pipes/ValidationPipe.pipe';
 import { CreateUserAdminDto } from './dto/create-user-admin.dto';
@@ -72,25 +69,6 @@ export class UserController {
     createByAdmin: CreateUserAdminDto,
   ) {
     return this.userService.createByAdmin(createByAdmin)
-  }
-
-  // ! Login de usuario
-  @Post('/login')
-  login(
-    @Body(new LoginPipePipe()) body: { value: any; errors: any },
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
-    if (body.errors) {
-      throw new BadRequestException(body.errors);
-    }
-    return this.userService.login(body.value, res);
-  }
-
-  // ! Logout de usuario
-  @Post('/logout')
-  logout(@Res({ passthrough: true }) res: Response) {
-    return this.userService.logout(res);
   }
 
   // ! Obtener todos los usuarios

@@ -17,7 +17,7 @@ export interface UserRegister {
 
 // TODO Login del usuario
 export const login = async (user: UserLogin) => {
-  return await axios.post("/user/login", user).catch((err) => {
+  return await axios.post("/auth/login", user).catch((err) => {
     // console.log(err);
     throw err;
   });
@@ -43,7 +43,7 @@ export const register = async (user : FormData ) => {
 // TODO Salida del usuario
 export const logout = async () => {
   return await axios
-    .post("/user/logout")
+    .post("/auth/logout")
     .then((res) => {
       // console.log(res);
       return res
