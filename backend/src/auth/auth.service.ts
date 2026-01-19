@@ -1,10 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { User } from 'src/user/schemas/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { LoginUserDto } from 'src/user/dto/login-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import { compare } from 'bcrypt';
 import { Response } from 'express';
 import { JwtService } from '@nestjs/jwt';

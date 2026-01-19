@@ -1,18 +1,12 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   BadRequestException,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { LoginPipePipe } from 'src/user/pipes/login-pipe.pipe';
+import { LoginPipePipe } from './pipes/login.pipe';
 import { Response } from 'express';
 
 @Controller('auth')
@@ -25,7 +19,7 @@ export class AuthController {
     @Body(new LoginPipePipe()) body: { value: any; errors: any },
     @Res({ passthrough: true }) res: Response,
   ) {
-    // TODO: Valida el body y verifica si hay errores en caso de que haya errores, eliminar la imagen y lanzar una excepción
+    // TODO: Valida el body y verifica si hay errores en caso de que haya errores lanzar una excepción
     if (body.errors) {
       throw new BadRequestException(body.errors);
     }

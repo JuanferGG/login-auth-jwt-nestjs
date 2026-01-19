@@ -1,23 +1,19 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { UpdateUserMeDto } from './dto/update-userMe.dto';
 import { User } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { unlink } from 'fs/promises';
 import { join } from 'path';
-import { compare, hash } from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { Response } from 'express';
+import { hash } from 'bcrypt';
 import { CreateUserAdminDto } from './dto/create-user-admin.dto';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private UserModel: Model<User>,
-    private jwtService: JwtService,
+    @InjectModel(User.name) private UserModel: Model<User>
   ) {}
 
   // TODO: Funcion para eliminar la imagen
