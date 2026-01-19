@@ -62,7 +62,7 @@ export default function DataTableUsers({
     role: user.role,
     image: user.image,
     password: null,
-    createdAt: new Date(user.createdAt).toLocaleString(),
+    createdAt: new Date(user.createdAt),
   }));
 
   const handleEdit = (user: UserRow) => {
